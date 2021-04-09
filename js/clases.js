@@ -1,14 +1,14 @@
 class Agente{
     constructor(nombre,apellido,mail, telefono){
-        this.name = nombre;
-        this.surname = apellido;
+        this.nombre = nombre;
+        this.apellido = apellido;
         this.mail = mail;
-        this.cel = telefono;
+        this.telefono = telefono;
     }
 }
 
 class Vivienda{
-    constructor(id, direccion, tipo, ambientes, operacion, estado, dormitorios, precio, moneda, expensas = " ", ){
+    constructor(id, direccion, tipo, ambientes, operacion, estado, dormitorios, precio, moneda, expensas = " ", disponible = true ){
         this.id = id;
         this.direccion = direccion;
         this.tipo = tipo;
@@ -19,6 +19,17 @@ class Vivienda{
         this.precio = precio;
         this.moneda = moneda;
         this.expensas = expensas;
+        this.disponible = disponible;
+    }
+
+    reservado(){
+        // Cambio el estado del inmueble reservado
+        this.estado = "Reservado";
+    }
+
+    alquilado(){
+        this.estado = "Alquilado";
+        this.disponible = false;
     }
 }
 
