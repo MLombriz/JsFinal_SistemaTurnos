@@ -1,52 +1,37 @@
-class Agente{
-    constructor(nombre,apellido,mail, telefono){
+class Usuario{
+    constructor(nombre, apellido, mail, apodo = " ", clave, id = " "){
         this.nombre = nombre;
         this.apellido = apellido;
         this.mail = mail;
-        this.telefono = telefono;
+        this.apodo = apodo;
+        this.clave = clave;
+        this.id = id;
+    }
+        exito(){
+            return 'Usuario creado con exito'
+        }
+
+        existente(){
+            return 'Usuario ya previamente existente'
+        }
     }
 }
 
-class Vivienda{
-    constructor(id, direccion, tipo, ambientes, operacion, estado, dormitorios, precio, moneda, expensas = " ", disponible = true ){
-        this.id = id;
-        this.direccion = direccion;
+class Movimiento{
+    constructor(tipo, categoria, fecha, importe, moneda, descripcion = " "){
         this.tipo = tipo;
-        this.ambientes = ambientes;
-        this.operacion = operacion;
-        this.estado = estado;
-        this.dormitorios = dormitorios;
-        this.precio = precio;
+        this.categoria = categoria;
+        this.fecha = fecha;
+        this.importe = importe;
         this.moneda = moneda;
-        this.expensas = expensas;
-        this.disponible = disponible;
+        this.descripcion = descripcion;
     }
 
-    reservado(){
-        // Cambio el estado del inmueble reservado
-        this.estado = "Reservado";
+    guardar(){
+        return `Se ha guardado el ${this.tipo} ${this.categoria} por un importe de ${this.importe}`;
     }
 
-    alquilado(){
-        this.estado = "Alquilado";
-        this.disponible = false;
-    }
-}
-
-class diaSemana{
-    constructor(id,dia, diminutivo, hsInicial, hsFinal){
-        this.id = id;
-        this.dia = dia;
-        this.diminutivo = diminutivo;
-        this.hsInicial = hsInicial;
-        this.hsFinal = hsFinal;
-    }
-}
-
-class Mes{
-    constructor(id,nombre, diminutivo){
-        this.id = id;
-        this.mes = nombre;
-        this.diminutivo = diminutivo;
+    eliminar(){
+        return `Se ha eliminado el ${this.tipo} ${this.categoria} por un importe de ${this.importe}`;
     }
 }
