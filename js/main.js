@@ -41,6 +41,7 @@ totalMov.push(mov1,mov2,mov3);
 
 console.log(totalMov);
 
+// Agrego los movimientos en la plataforma:
 let contador = 0;
 for (const movimiento of totalMov) {
     contador += 1;
