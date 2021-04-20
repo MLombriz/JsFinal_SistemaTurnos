@@ -18,66 +18,71 @@
             y egresos, categorizarlos, visualizarlos editar o eliminarlos. 
         </p>
         <!-- Ingresar usuario para Login -->
-        <h2>Log-In</h2>
-        <form action="">
-            <label for="name">Nombre:</label>
-            <input type="name" id="nameLogIn" placeholder="Ingrese Nombre">
-            <br>
-            <label for="surnname">Apellido:</label>
-            <input type="surname" id="surNameLogIn" placeholder="Ingrese Apellido">
-            <br>
-            <label for="password">Clave:</label>
-            <input type="password" id="passwordLogIn" placeholder="Ingrese Clave">
-            <br>
-            <label for="email">Mail:</label>
-            <input type="email" name="" id="emailLogIn" placeholder="Ingresar E-mail">
-            <br>
-            <button type="submit">Iniciar Sesion</button>
-            <button>Registrarse</button>
-        </form>
-        
-
-        <h2>Cargar Ingresos / Egresos</h2>
-        <div>
+        <div class="logIn">
+            <h2>Log-In</h2>
             <form action="">
-                <label for="tipo">Tipo:</label>
-                <select name="tipo" id="tipo">
-                    <option value="Ingreso">Ingreso</option>
-                    <option value="Egreso">Egreso</option>
-                </select>
+                <label for="name">Nombre:</label>
+                <input type="name" id="nameLogIn" placeholder="Ingrese Nombre">
                 <br>
-                <label for="categorias">Categoria:</label>
-                <select name="categorias" id="categorias">
-                    <option value="Sueldo">Sueldo</option>
-                    <option value="Transporte">Transporte</option>
-                    <option value="Expensas">Expensas</option>
-                    <option value="Deuda">Deuda</option>
-                    <option value="Otros">Otros</option>
-                </select>
+                <label for="surnname">Apellido:</label>
+                <input type="surname" id="surnameLogIn" placeholder="Ingrese Apellido">
                 <br>
-                <label for="">Crear Categoria</label>
-                <input name= "categorias" type="text" placeholder="Introducir categoria nueva" id="categoriaNueva">
+                <label for="password">Clave:</label>
+                <input type="password" id="passwordLogIn" placeholder="Ingrese Clave">
                 <br>
-                <label for="Fecha">Fecha:</label>
-                <input type="date" id="fechaGasto" name="fecha">
+                <label for="email">Mail:</label>
+                <input type="email" name="" id="emailLogIn" placeholder="Ingresar E-mail">
                 <br>
-                <label for="Fecha">Descripcion:</label>
-                <input type="text" placeholder="Descripcion">
-                <br>
-                <button type="submit">Cargar</button>
-                <button type="reset">reset</button>
+                <button id="btnSesion" type="submit">Iniciar Sesion</button>
             </form>
         </div>
-        <!-- Veo los movimientos cargados por el usuario -->
-        <div id="movCargados">
-
+        
+        <div class="altaDatos">
+            <h2>Cargar Ingresos / Egresos</h2>
+            <div>
+                <form action="">
+                    <label for="tipo">Tipo:</label>
+                    <select name="tipo" id="tipo">
+                        <option value="Ingreso">Ingreso</option>
+                        <option value="Egreso">Egreso</option>
+                    </select>
+                    <br>
+                    <label for="categorias">Categoria:</label>
+                    <select name="categorias" id="categorias">
+                        <option value="Sueldo">Sueldo</option>
+                        <option value="Transporte">Transporte</option>
+                        <option value="Expensas">Expensas</option>
+                        <option value="Deuda">Deuda</option>
+                        <option value="Otros">Otros</option>
+                    </select>
+                    <br>
+                    <label for="">Crear Categoria</label>
+                    <input name= "categorias" type="text" placeholder="Introducir categoria nueva" id="categoriaNueva">
+                    <br>
+                    <label for="Fecha">Fecha:</label>
+                    <input type="date" id="fechaGasto" name="fecha">
+                    <br>
+                    <label for="Fecha">Descripcion:</label>
+                    <input type="text" placeholder="Descripcion">
+                    <br>
+                    <button id="btnAlta" type="submit">Cargar</button>
+                    <button id="btnReset" type="reset">reset</button>
+                </form>
+            </div>
+            <button id="btnMovementsOn">Mostrar Movimientos</button>
+            <button id="btnMovementsOff">Ocultar Movimientos</button>
         </div>
+              
+        <!-- Veo los movimientos cargados por el usuario -->
+        
+        <!--<div id="movCargados">
+            <h2>Listado de movimientos</h2>
+        </div>-->
 
         
-        <!--[if lt IE 7]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
-        <script src="./js/clases.js" async defer></script>
-        <script src="./js/main.js" async defer></script>
+        <!-- SCRIPTS -->
+        <script src="./js/clases.js"></script>
+        <script src="./js/eventos.js"></script>
+        <script src="./js/main.js"></script>
     </body>
 </html>

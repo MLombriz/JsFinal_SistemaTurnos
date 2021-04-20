@@ -14,7 +14,6 @@ class Usuario{
         existente(){
             return 'Usuario ya previamente existente'
         }
-    }
 }
 
 class Movimiento{

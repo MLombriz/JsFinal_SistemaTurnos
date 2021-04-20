@@ -29,28 +29,3 @@ console.log(categoriasExistentes)
 let newCategory = document.getElementById("categoriaNueva")
 console.log(newCategory.innerText)
 
-
-// Creo Movimientos de Gastos / Ingresos
-const mov1 = new Movimiento("Ingreso","Sueldo","02/04/2021",45000,"pesos","Ingreso Sueldo");
-const mov2 = new Movimiento("Egreso","Expensas","05/04/2021",8000,"pesos","Expensas Abril");
-const mov3 = new Movimiento("Egreso","Alquiler","05/04/2021",30000,"pesos","Alquiler Depto");
-
-let totalMov = [];
-// "Pusheamos" los movimientos del mes en el array
-totalMov.push(mov1,mov2,mov3);
-
-console.log(totalMov);
-
-// Agrego los movimientos en la plataforma:
-let contador = 0;
-for (const movimiento of totalMov) {
-    contador += 1;
-    // Creo un elemento p para mostrar los movimientos cargados
-    let parrafoMov = document.createElement("p");
-    // Le genero el valor
-    parrafoMov.innerHTML = `Movimiento ${contador} - Tipo: ${movimiento.tipo} - Monto: ${movimiento.importe} ${movimiento.moneda} - Descripcion: ${movimiento.descripcion}`;
-    // Anexo el parrafo al final
-    document.getElementById("movCargados").appendChild(parrafoMov);
-
-    console.log(parrafoMov)
-}
