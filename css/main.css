@@ -1,0 +1,62 @@
+
+
+.expense-feedback, .budget-feedback{
+    display: none;
+}
+
+.showItem{
+    display: block;
+     
+}
+
+footer{
+    height: 20vh;
+}
+
+.budget-description, .budget-amount, .budget-type{
+    color: green;
+    font-weight: bold;
+}
+.expense-description, .expense-amount, .expense-type{
+    color: red;
+    font-weight: bold;
+}
+/* ///// LISTADO CLASES //// */
+
+.title-list-item{
+    text-align: center;
+    font-weight: bold;
+}
+.expense{
+    text-align: center;
+    background-color: red;
+    color: white;
+    border-radius: 8px;
+    border: 2px solid white;
+}
+.budget{
+    text-align: center;
+    background-color: green;
+    color: white;
+    border-radius: 8px;
+    border: 2px solid white;
+}
+.list-space{
+    background-color: black;
+    height: 3px;
+    min-height: 3px;
+}
+ion-icon{
+    color: white;
+}
+/* ///////  COLORES ///////// */
+
+.showGreen{
+    color: green;
+}
+.showRed{
+    color: tomato;
+}
+.showBlack{
+    color: black;
+}

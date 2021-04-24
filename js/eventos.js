@@ -1,5 +1,5 @@
 
-
+/*
 // LISTADO DE MOVIMIENTOS
 
 // Creo Movimientos de Gastos / Ingresos
@@ -66,3 +66,4 @@ let formularios = document.getElementsByTagName("form");
 for (const iterator of formularios) {
     iterator.addEventListener("submit", validarFormulario)
 }
+*/
