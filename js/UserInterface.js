@@ -110,7 +110,7 @@ class UI {
     // addBudget (agregar INPUT)
     addBudget(income){
         const divBudget = document.createElement('div');
-        divBudget.classList.add('budget');
+        divBudget.classList.add('budget-items');
         divBudget.innerHTML = `
         <div class="budget-item d-flex justify-content-between align-items-baseline">
             <div class="col-3 list-item text-uppercase budget-description">${income.title}</div>
@@ -134,7 +134,7 @@ class UI {
     // addExpense (agregar GASTO)
     addExpense(expense) {
         const divExpense = document.createElement('div');
-        divExpense.classList.add('expense');
+        divExpense.classList.add('expense-items');
         divExpense.innerHTML = `
         <div class="expense-item d-flex justify-content-between align-items-baseline">
             <div class="col-3 list-item text-uppercase expense-description">${expense.title}</div>

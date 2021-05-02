@@ -15,6 +15,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
         integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <script type="module" src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons/ionicons.esm.js"></script> <!--Logos ION-->
     <link rel="stylesheet" href="./css/main.css">
 </head>
 
@@ -156,7 +157,7 @@
                         <div class="col-4 text-center">
                             <h6 class="text-uppercase">Total Ingresos</h6>
                             <span class="budget-icon">Logo</span>
-                            <h4 class="text-uppercase budget showGreen" id="budget"><span>$ <span
+                            <h4 class="text-uppercase budget-amount showGreen" id="budget"><span>$ <span
                                         id="budget-amount">0</span></span></h4>
                         </div>
                         <div class="col-4 text-center">
@@ -168,7 +169,7 @@
                         <div class="col-4 text-center">
                             <h6 class="text-uppercase">Total Gastos</h6>
                             <span class="expense-icon">Logo</span>
-                            <h4 class="text-uppercase expense showRed" id="expense"><span>$ <span
+                            <h4 class="text-uppercase expense-amount showRed" id="expense"><span>$ <span
                                         id="expense-amount">0</span></span></h4>
                         </div>
                     </div>
@@ -206,9 +207,7 @@
                                             <!--<button class="btn btn-sm btn-danger" id="delete-button">borrar</button>-->
                                         </a>
                                     </div>
-                                    
                                 </div>
-                                <div class="w-100 list-space"></div>
                             </div>
                         </div>
     
@@ -231,9 +230,7 @@
                                             <!--<button class="btn btn-sm btn-danger" id="delete-button">borrar</button>-->
                                         </a>
                                     </div>
-                                    
                                 </div>
-                                <div class="w-100 list-space"></div>
                             </div>
                         </div>
                     </div>
@@ -268,7 +265,6 @@
             </div>-->
 
     <!-- SCRIPTS -->
-    <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script> <!-- Iconos-->
     <script src="./js/UserInterface.js"></script>
     <script src="./js/clases.js"></script>
     <script src="./js/eventos.js"></script>
