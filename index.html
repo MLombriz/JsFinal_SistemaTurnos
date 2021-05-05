@@ -36,77 +36,102 @@
         <div class="container-fluid">
             <div class="row justify-content-center">
                 <h2 class="text-uppercase">Plataforma para cargar Gastos / Ingresos</h2>
-                <!-- INGRESO DE INCOME -->
-                <div class="col-md-6">
-                    <!-- Formulario Ingreso -->
-                    <form id="budget-form" class="budget-form">
-                        <h5 class="text-capitalize">Favor de cargar sus ingresos</h5>
-                        <div class="form-group">
-                            <input type="text" id="textBudget-input" class="form-control budget-input">
+                <!-- FORMULARIO DE CARGA -->
+                <div class="w-100"></div> <!-- Genero un salto de fila -->
+                <div class="col-md-5">
+                    <div class="select-form container-fluid">
+                        <div class="row" id="typeSelection">
+                            <div class="col-md-6">
+                                <button id="selectBudget" class="btn btn-outline-success btn-block expense-submit">Ingreso</button>
+                            </div>
+                            <div class="col-md-6">
+                                <button id="selectExpense" class="btn btn-outline-danger btn-block expense-submit">Egreso</button>
+                            </div>
+                        </div>   
+                    </div>
+                </div>
+                <div class="w-100"></div> <!-- Genero un salto de fila -->
+                <div class="col-md-9">   
+                    <!-- Formulario Generico -->
+                    <form id="generic-form" class="generic-form">
+                        <div class="form-group row">
+                            <label for="generic-date" class="col-sm-2 ">Fecha:</label>
+                            <div class="col-sm-9">
+                                <input type="date" id="generic-date" class="form-control generic-input">
+                                <small id="small-date" class="form-text text-muted">
+                                    Ingresar fecha del evento
+                                </small>
+                            </div>
+                            <span class="col-sm-1"><ion-icon name="close-circle" size="large"></ion-icon></span> 
                         </div>
-                        <h5 class="text-capitalize">Cargar monto del ingreso</h5>
-                        <div class="form-group">
-                            <input type="number" id="budget-input" class="form-control budget-input">
+
+                        <div class="form-group row">
+                            <label for="generic-account" class="col-sm-2 ">Cuenta:</label>
+                            <div class="col-sm-9">
+                                <select id="generic-account" class="form-control">
+                                    <option value=""></option>
+                                    <option value="efectivo">Efectivo</option>
+                                    <option value="tarjet">Tarjeta Credito</option>
+                                    <option value="cuenta">Cuenta</option>
+                                </select>
+                                <small id="small-account" class="form-text text-muted">
+                                    Seleccionar Cuenta
+                                </small>
+                            </div>
+                            <span class="col-sm-1"><ion-icon name="close-circle" size="large"></ion-icon></span> 
                         </div>
-                        <!-- Feedback income -->
-                        <div class="budget-feedback alert alert-danger text-capitalize" id="feedback-budget">Budget Feedback</div>
+                        
+                        <div class="form-group row">
+                            <label for="generic-category" class="col-sm-2 ">Categoria:</label>
+                            <div class="col-sm-9">
+                                <select id="generic-category" class="form-control">
+                                    <option value=""></option>
+                                    <option value="cat-venta">Venta</option>
+                                    <option value="cat-comida">Comida</option>
+                                    <option value="cat-salario">Salario</option>
+                                </select>
+                                <small id="small-category" class="form-text text-muted">
+                                    Seleccionar Categoria
+                                </small>
+                            </div>
+                            <span class="col-sm-1"><ion-icon name="close-circle" size="large"></ion-icon></span> 
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="generic-amount" class="col-sm-2">Monto:</label>
+                            <div class="col-sm-9">
+                                <input type="number" id="number-input" class="form-control generic-input">
+                                <small id="small-amount" class="form-text text-muted">
+                                    Ingresar Monto (caracteres numericos)
+                                </small>
+                            </div>
+                            <span class="col-sm-1"><ion-icon name="close-circle" size="large"></ion-icon></span> 
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="generic-title" class="col-sm-2">Descripcion:</label>
+                            <div class="col-sm-9">
+                                <input type="text" id="text-input" class="form-control generic-input">
+                                <small id="small-description" class="form-text text-muted">
+                                    Ingresar Descripcion del evento con longitud entre 5-12 caracteres
+                                </small>
+                            </div>
+                            <span class="col-sm-1"><ion-icon name="close-circle" size="large"></ion-icon></span> 
+                        </div>
+
+                        
                         <!-- Submit Income Form -->
-                        <button type="submit" id="budget-submit" class="btn  btn-outline-success btn-block budget-submit">Agregar Ingreso</button>
+                        <div class="form-group row justify-content-center">
+                            <button type="submit" id="budget-submit" class="btn  btn-outline-success budget-submit col-sm-6">Grabar</button>
+                            <!-- Feedback -->
+                            <small class="feedback-notification text-capitalize col-sm-7 form-text text-muted" id="feedback-notification">Feedback</small>
+                        </div>
+                        
                     </form>
                     
-                </div>
-                <div class="col-md-6">
-                    <!-- Listado Ingresos -->
-                    <div class="budget-list" id="budget-list">
-                        <h4>Listado de Gastos</h4>
-                        <div class="row justify-content-center text-capitalize">
-                            <div class="col-3 list-item">Descripcion</div>
-                            <div class="col-3 list-item">Monto</div>
-                            <div class="col-3 list-item">Tipo</div>
-                            <div class="col-3 list-item">Accion</div>
-                        </div>
-                    </div>
-
                 </div>
                 <div class="w-100"></div> <!-- Genero un salto de fila -->
                 
-                <!-- CARGA DE GASTOS -->
-                <div class="col-md-6">
-                    <!-- Formulario Gasto -->
-                    <form id="expense-form" class="expense-form">
-                        <h5 class="text-capitalize">Descripcion del gasto</h5>
-                        <div class="form-group">
-                            <input type="text" id="expense-input" class="form-control expense-input">
-                        </div>
-                        <h5>Cargue fecha del evento</h5>
-                        <div class="form-group">
-                            <input type="date" id="expense-date" class="form-control expense-input">
-                        </div>
-                        <h5 class="text-capitalize">Cargar monto del Gasto</h5>
-                        <div class="form-group">
-                            <input type="number" id="amount-input" class="form-control expense-input">
-                        </div>
-                        <!-- Feedback income -->
-                        <div class="expense-feedback alert alert-danger text-capitalize" id="feedback-expense">Expense Feedback</div>
-                        <!-- Submit Income Form -->
-                        <button type="submit" id="expense-submit" class="btn btn-outline-danger btn-block expense-submit">Agregar Gasto</button>
-                    </form>
-                    
-                </div>
-                <div class="col-md-6">
-                    <!-- Listado Gastos -->
-                    <div class="expense-list" id="expense-list">
-                        <h4>Listado de Gastos</h4>
-                        <div class="row justify-content-center text-capitalize">
-                            <div class="col-3 list-item">Descripcion</div>
-                            <div class="col-3 list-item">Monto</div>
-                            <div class="col-3 list-item">Tipo</div>
-                            <div class="col-3 list-item">Accion</div>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="w-100"></div> <!-- Genero un salto de fila -->
                 <!-- APP INFO -->
                 <div class="col-9">
                     <div class="row justify-content-center">
@@ -133,7 +158,7 @@
                 <!-- LISTADO -->
                 <div class="col-md-11">
                     <!-- Listado Gastos -->
-                    <div class="total-list" id="total-list">
+                    <div>
                         <h4>Listado</h4>
                         <div class="row justify-content-center text-capitalize">
                             <div class="col-2 title-list-item text-uppercase">Fecha</div>
@@ -143,51 +168,8 @@
                             <div class="col-2 title-list-item text-uppercase">Categoria</div>
                             <div class="col-2 title-list-item text-uppercase">Accion</div>
                         </div>
+                        <div class="total-list" id="total-list">
 
-                        <!-- Ingreso Simple -->
-                        <div class="budget">
-                            <div class="budget-item d-flex justify-content-between align-items-center">
-                                <div class="col-2 budget-list-item">20-04-2021</div>
-                                <div class="col-2 budget-list-item">Sueldo</div>
-                                <div class="col-2 budget-list-item">+$ 400</div>
-                                <div class="col-2 budget-list-item">Ingreso</div>
-                                <div class="col-2 budget-list-item">trabajo</div>
-                                <div class="col-2 budget-icons">
-                                    <div class="row">
-                                        <a href="#" class="edit-icon mx-2" data-id="${budget.id}">
-                                            <ion-icon name="create" size="large" id="edit-button"></ion-icon>
-                                            <!--<button class="btn  btn-sm btn-warning" id="edit-button">editar</button>-->
-                                        </a>
-                                        <a href="#" class="delete-icon" data-id="${budget.id}">
-                                            <ion-icon name="trash" size="large" id="delete-button"></ion-icon>
-                                            <!--<button class="btn btn-sm btn-danger" id="delete-button">borrar</button>-->
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-    
-                        <!-- Gasto Simple -->
-                        <div class="expense">
-                            <div class="expense-item d-flex justify-content-between align-items-center">
-                                <div class="col-2 expense-list-item">20-04-2021</div>
-                                <div class="col-2 expense-list-item">Expensas</div>
-                                <div class="col-2 expense-list-item">-$ 400</div>
-                                <div class="col-2 expense-list-item">Gasto</div>
-                                <div class="col-2 expense-list-item">Casa</div>
-                                <div class="col-2 expense-icons">
-                                    <div class="row">
-                                        <a href="#" class="edit-icon mx-2" data-id="${budget.id}">
-                                            <ion-icon name="create" size="large" id="edit-button"></ion-icon>
-                                            <!--<button class="btn  btn-sm btn-warning" id="edit-button">editar</button>-->
-                                        </a>
-                                        <a href="#" class="delete-icon" data-id="${budget.id}">
-                                            <ion-icon name="trash" size="large" id="delete-button"></ion-icon>
-                                            <!--<button class="btn btn-sm btn-danger" id="delete-button">borrar</button>-->
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
 

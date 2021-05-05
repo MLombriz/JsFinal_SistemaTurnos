@@ -1,6 +1,6 @@
 
 
-.expense-feedback, .budget-feedback{
+.feedback-notification{
     display: none;
 }
 
@@ -47,7 +47,7 @@ footer{
     min-height: 3px;
 }
 ion-icon{
-    color: white;
+    color: black;
 }
 /* ///////  COLORES ///////// */
 
@@ -55,7 +55,7 @@ ion-icon{
     color: green;
 }
 .showRed{
-    color: tomato;
+    color: red;
 }
 .showBlack{
     color: black;

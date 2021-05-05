@@ -1,18 +1,20 @@
 class UI {
     constructor() {
+        // Datos Cargados por USUARIO
         // Datos Ingresos UI
-        this.budgetFeedback = $(".budget-feedback");
-        this.budgetForm = $(".budget-form");
-        this.budgetInput = $("#budget-input");
-        this.budgetTextInput = $("#textBudget-input");
+        this.genericForm = $(".generic-form");
+        this.feedbackNotif = $("#feedback-notification");
+        this.numberInput = $("#number-input");
+        this.textInput = $("#text-input");
+        this.category = $("#generic-category");
+        this.account = $("#generic-account");
+        this.dateInput = $("#generic-date");
 
-        // Datos Gastos UI
-        this.expenseFeedback = $("#feedback-expense");
-        this.expenseForm = $(".expense-form");
-        this.expenseInput = $("#expense-input");
-        this.expenseDate = $("#expense-date");
-        this.amountInput = $("#amount-input"); //Monto cargado por usuario Gasto 
-
+        // Seleccion Ingreso o Gasto
+        this.incomeBtn = $("#selectBudget");
+        this.expenseBtn = $("#selectExpense");
+        this.typeSelect = $("#typeSelection");
+        
         // APP INFO VALORES
         this.budgetAmount = $("#budget-amount");
         this.expenseAmount = $("#expense-amount");
@@ -20,136 +22,161 @@ class UI {
         this.balance = $("#balance");
 
         // Listas Ingresos / Gastos
-        this.expenseList = $("#expense-list");
-        this.budgetList = $("#budget-list");
+        
+        this.totalList = $("#total-list");
+        this.itemID = 0;
+
+        //////////////////////////////////////////////
+        // Elementos posibles a ELIMINAR
         this.itemExpenseList = []; //Lista de Gastos
         this.itemBudgetList = []; //Lista de Ingresos
+
+        this.expenseList = $("#expense-list");
+        this.budgetList = $("#budget-list");
         this.itemExpenseID = 0;
         this.itemBudgetID = 0;
+        
+
     }
 
     // Declaramos los Metodos
-    // submit budget method
-    submitBudgetForm() {
-        const value = this.budgetInput.val(); //Valor ingresado por UI
-        const budgetText = this.budgetTextInput.val();
-        if (budgetText === "" || value === "" || value < 0) {
-            this.budgetFeedback.addClass('showItem');
-            this.budgetFeedback.html(`<p> No puede faltar el valor o ser negativo </p>`);
-            this.budgetFeedback.removeClass('alert-success');
-            this.budgetFeedback.addClass('alert-danger');
-            setTimeout(() => { // En cierto tiempo la alerta desaparece
-                this.budgetFeedback.removeClass("showItem");
-            }, 3000);
-        } else {
-            //this.budgetAmount.textContent = value; //Asigno el valor cargado al budget
-            this.budgetInput.val(''); //Seteo el valor a "vacio" para que no quede a la vista
-            this.budgetTextInput.val('');
-            // Feedback OK - Carga Exitosa
-            this.budgetFeedback.addClass('showItem');
-            this.budgetFeedback.html(`<p> Carga de Ingreso exitosa </p>`);
-            this.budgetFeedback.removeClass('alert-danger');
-            this.budgetFeedback.addClass('alert-success');
-            setTimeout(() => { // En cierto tiempo la alerta desaparece
-                this.budgetFeedback.removeClass('showItem');
-            }, 3000);
+    // Grabar item cargado ("Submit")
+    submitForm(valor){
+        // guardo los valores cargados por UI
+        const fecha = this.dateInput.val();
+        const account = this.account.val();
+        const category = this.category.val();
+        const amount = this.numberInput.val();
+        const title = this.textInput.val();
 
-            // Creo objeto INPUT
-            const income = {
-                id: this.itemBudgetID,
-                title: budgetText,
-                amount: parseInt(value),
+        if(this.checkForm() && (amount > 0)){//condicion si todo esta Ok
+            this.dateInput.val('');
+            this.account.val('');
+            this.category.val('');
+            this.numberInput.val('');
+            this.textInput.val('');
+            // Feedback OK - Carga Exitosa
+            this.feedbackNotif.addClass('showItem');
+            this.feedbackNotif.html(`<p> Carga exitosa </p>`);
+            this.feedbackNotif.removeClass('alert-danger');
+            this.feedbackNotif.addClass('alert-success');
+            setTimeout(() => { // En cierto tiempo la alerta desaparece
+                this.feedbackNotif.removeClass('showItem');
+            }, 3000);
+            //////////////////////////////////////////////
+            // Verifico si esta apretado boton Ingreso o Egreso
+            if(valor === true){
+                // Creo objeto INCOME
+                const income = {
+                    id: this.itemID,
+                    date: fecha,
+                    title: title,
+                    amount: parseInt(amount),
+                    category: category,
+                    account: account,
+                } 
+                this.itemID++;
+                this.itemBudgetList.push(income);
+                // Instancio funciones creadas
+                this.addBudget(income);
+                this.showBalance();
+
+            } else {
+                // Creo objeto EXPENSE
+                const expense = {
+                    id: this.itemID,
+                    date: fecha,
+                    title: title,
+                    amount: parseInt(amount),
+                    category: category,
+                    account: account,
+                } 
+                this.itemID++;
+                this.itemExpenseList.push(expense);
+                // Instancio funciones creadas
+                this.addExpense(expense);
+                this.showBalance();
             }
-            this.itemBudgetID++;
-            this.itemBudgetList.push(income);
-            // Instancio funciones creadas
-            this.addBudget(income);
-            this.showBalance();
+            
+        } else{ //condicion si hay algo erroneo
+            this.feedbackNotif.addClass('showItem');
+            this.feedbackNotif.html(`<p> Hay datos faltantes en el Formulario o el Monto es negativo</p>`);
+            this.feedbackNotif.removeClass('alert-success');
+            this.feedbackNotif.addClass('alert-danger');
+            setTimeout(() => { // En cierto tiempo la alerta desaparece
+                this.feedbackNotif.removeClass("showItem");
+            }, 3000);
         }
     }
 
-    // submit Expense Form method
-    submitExpenseForm() {
-        const expenseValue = this.expenseInput.val(); //Valor ingresado por UI
-        const amountValue = this.amountInput.val();
-        if (expenseValue === "" || amountValue === "" || amountValue < 0) {
-            this.expenseFeedback.addClass('showItem');
-            this.expenseFeedback.html(`<p> No puede faltar el valor o ser negativo </p>`);
-            this.expenseFeedback.removeClass('alert-success');
-            this.expenseFeedback.addClass('alert-danger');
-            setTimeout(() => {
-                this.expenseFeedback.removeClass('showItem');
-            }, 3000); //3000 ms = 3 seg
-        } else {
-            let amountExpense = parseInt(amountValue);
-            this.expenseInput.val("");
-            this.amountInput.val("");
-
-            // Feedback OK - Carga Exitosa
-            this.expenseFeedback.addClass('showItem');
-            this.expenseFeedback.html(`<p> Carga de Gasto exitosa </p>`);
-            this.expenseFeedback.removeClass('alert-danger');
-            this.expenseFeedback.addClass('alert-success');
-            setTimeout(() => { // En cierto tiempo la alerta desaparece
-                this.expenseFeedback.removeClass('showItem');
-            }, 3000);
-
-            // Creo el objeto expense para almacenarlo con los datos cargados por UI
-            let expense = {
-                id: this.itemExpenseID,
-                title: expenseValue,
-                amount: amountExpense,
+    checkForm(){
+        let controlOk = false;
+        const formArray = [this.numberInput, 
+            this.textInput, this.category,
+            this.account, this.dateInput];
+        for (const iterator of formArray) {
+            if(iterator.val()===""){
+                controlOk = false;
             }
-            this.itemExpenseID++; //aumento el ID para que no se repita
-            this.itemExpenseList.push(expense); // Agrego el objeto expense dentro de la lista
-            // Instancio funciones creadas
-            this.addExpense(expense); // lo muestro en el listado de Gastos
-            this.showBalance(); //Vuelvo a recalcular el balance
+            else{
+                controlOk = true;
+            }
         }
+        return controlOk;
     }
+    
     // addBudget (agregar INPUT)
     addBudget(income) {
-
-        this.budgetList.append(`
-        <div class="budget-items">
-            <div class="budget-item d-flex justify-content-between align-items-baseline">
-                <div class="col-3 list-item text-uppercase budget-description">${income.title}</div>
-                <div class="col-3 list-item budget-amount">${income.amount}</div>
-                <div class="col-3 list-item budget-type">No cargado</div>
-                <div class="col-3 list-item budget-icons">
+        this.totalList.prepend(`
+        <div class="budget">
+            <div class="budget-item d-flex justify-content-between align-items-center">
+                <div class="col-2 budget-list-item">20-04-2021</div>
+                <div class="col-2 budget-list-item text-uppercase">${income.title}</div>
+                <div class="col-2 budget-list-item">+$ ${income.amount}</div>
+                <div class="col-2 budget-list-item">Ingreso</div>
+                <div class="col-2 budget-list-item">S/N</div>
+                <div class="col-2 budget-icons">
                     <div class="row">
                         <a href="#" class="edit-icon mx-2" data-id="${income.id}">
-                            <button class="btn btn-warning btn-sm" id="budget-edit-button">editar</button>
+                            <ion-icon name="create" size="large" id="edit-button"></ion-icon>
+                            <!--<button class="btn  btn-sm btn-warning" id="edit-button">editar</button>-->
                         </a>
                         <a href="#" class="delete-icon" data-id="${income.id}">
-                            <button class="btn btn-danger btn-sm" id="budget-delete-button">borrar</button>
+                            <ion-icon name="trash" size="large" id="delete-button"></ion-icon>
+                            <!--<button class="btn btn-sm btn-danger" id="delete-button">borrar</button>-->
                         </a>
-                    </div>                    
+                    </div>
                 </div>
             </div>
-        </div>`);
+        </div>
+        `)
     }
 
     // addExpense (agregar GASTO)
     addExpense(expense) {
-        this.expenseList.append(`
-        <div class="expense-items">
-            <div class="expense-item d-flex justify-content-between align-items-baseline">
-                <div class="col-3 list-item text-uppercase expense-description">${expense.title}</div>
-                <div class="col-3 list-item expense-amount">${expense.amount}</div>
-                <div class="col-3 list-item expense-type">No cargado</div>
-                <div class="col-3 list-item expense-icons">
+        this.totalList.prepend(`
+        <div class="expense">
+            <div class="expense-item d-flex justify-content-between align-items-center">
+                <div class="col-2 expense-list-item">20-04-2021</div>
+                <div class="col-2 expense-list-item text-uppercase">${expense.title}</div>
+                <div class="col-2 expense-list-item">-$ ${expense.amount}</div>
+                <div class="col-2 expense-list-item">Gasto</div>
+                <div class="col-2 expense-list-item">S/N</div>
+                <div class="col-2 expense-icons">
                     <div class="row">
                         <a href="#" class="edit-icon mx-2" data-id="${expense.id}">
-                            <button class="btn btn-warning btn-sm" id="expense-edit-button">editar</button>
+                            <ion-icon name="create" size="large" id="edit-button"></ion-icon>
+                            <!--<button class="btn  btn-sm btn-warning" id="edit-button">editar</button>-->
                         </a>
                         <a href="#" class="delete-icon" data-id="${expense.id}">
-                            <button class="btn btn-danger btn-sm" id="expense-delete-button">borrar</button>
+                            <ion-icon name="trash" size="large" id="delete-button"></ion-icon>
+                            <!--<button class="btn btn-sm btn-danger" id="delete-button">borrar</button>-->
                         </a>
-                    </div>                    
+                    </div>
                 </div>
             </div>
-        </div>`);
+        </div>
+        `)
     }
     // Show Balance
     showBalance() {
@@ -186,136 +213,145 @@ class UI {
     }
     // Calculo el Gasto Total (totalExpense)
     totalExpense() {
-        let total = 0;
+        let totalExpense = 0;
         if (this.itemExpenseList.length > 0) {
-            total = this.itemExpenseList.reduce(function (valAcum, valCorriente) {
+            totalExpense = this.itemExpenseList.reduce(function (valAcum, valCorriente) {
                 valAcum += valCorriente.amount; //Le sumo el valor actual al acumulado (x cada item de la lista)
                 return valAcum; // Tengo que devolver este valor para que la funcion ande correctamente
             }, 0);
 
         }
-        this.expenseAmount.text(total); // Muestro el total en el balance
-        return total;
+        this.expenseAmount.text(totalExpense); // Muestro el total en el balance
+        return totalExpense;
     }
-
-    // edit Element List EXPENSE
-    editExpense(element) {
-        let id = parseInt(element.dataset.id) //busco del elemento el data-id que se le asigno en el html
-        //console.log(element.parentElement.parentElement.parentElement.parentElement) busco el elemento padre a eliminar
-        let parent = element.parentElement.parentElement.parentElement.parentElement
-
-        // remuevo el elemento
-        parent.remove();
-
-        //seleccion de la lista el elemento
-        let expense = this.itemExpenseList.filter((item) => {
-            return item.id === id
-        });
-        // remuevo el elemnto de la lista y reemplazo la nueva lista sin ese elemento
-        let tempList = this.itemExpenseList.filter((item) => {
-            return item.id !== id
-        });
-        this.itemExpenseList = tempList;
-        this.showBalance();
-
-        //show value en editor
-        this.expenseInput.val(expense[0].title);
-        this.amountInput.val(expense[0].amount);
-
-    }
-    //delete Element List EXPENSE
-    deleteExpense(element) {
+    // edit List Item 
+    editItem(element){
         let id = parseInt(element.dataset.id);
         let parent = element.parentElement.parentElement.parentElement.parentElement;
+        
+        if(parent.classList.contains('expense')){// El elemento es un gasto
+            parent.remove();
+            //seleccion de la lista el elemento
+            let expense = this.itemExpenseList.filter((item) => {
+                return item.id === id
+            });
+            // remuevo el elemnto de la lista y reemplazo la nueva lista sin ese elemento
+            let tempList = this.itemExpenseList.filter((item) => {
+                return item.id !== id
+            });
+            this.itemExpenseList = tempList;
+            this.showBalance();
 
-        // elimino el elemento del DOM
-        parent.remove();
-        // Elimino el elemento del listado budget
-        let tempList = this.itemExpenseList.filter((item) => {
-            return item.id !== id
-        });
-        this.itemExpenseList = tempList;
-        this.showBalance();
+            //show value en editor
+            this.numberInput.val(expense[0].amount);
+            this.textInput.val(expense[0].title);
+            this.category.val(expense[0].category);
+            this.account.val(expense[0].account);
+            this.dateInput.val(expense[0].date);
+            this.textInput.val(expense[0].title);
+            this.numberInput.val(expense[0].amount);
+        }
+        else if(parent.classList.contains('budget')){// El elemento es un ingreso (Budget)
+            parent.remove();
+            // elimino el elemento de la lista Budget
+            let budget = this.itemBudgetList.filter((item) => {
+                return item.id === id
+            }); //Agarro el objeto
+            let tempList = this.itemBudgetList.filter((item) => {
+                return item.id !== id
+            }); // me genero una lista temporal
+            // genero el nuevo listado sin el elemento
+            this.itemBudgetList = tempList;
+            this.showBalance();
 
+            //show value en editor
+            this.numberInput.val(budget[0].amount);
+            this.textInput.val(budget[0].title);
+            this.category.val(budget[0].category);
+            this.account.val(budget[0].account);
+            this.dateInput.val(budget[0].date);
+            this.textInput.val(budget[0].title);
+            this.numberInput.val(budget[0].amount);
+        }
     }
-
-    //edit Budget Element
-    editBudget(element) {
+    // delete Item List EXPENSE / INCOME
+    deleteItem(element){
         let id = parseInt(element.dataset.id);
         let parent = element.parentElement.parentElement.parentElement.parentElement;
-        // elimino el elemento del DOM
-        parent.remove();
-        // elimino el elemento de la lista Budget
-        let budget = this.itemBudgetList.filter((item) => {
-            return item.id === id
-        }); //Agarro el objeto
-        let tempList = this.itemBudgetList.filter((item) => {
-            return item.id !== id
-        }); // me genero una lista temporal
-        // genero el nuevo listado sin el elemento
-        this.itemBudgetList = tempList;
-        this.showBalance();
-
-        // edito los valores
-        this.budgetTextInput.val(budget[0].title);
-        this.budgetInput.val(budget[0].amount);
+        
+        if(parent.classList.contains('expense')){
+            parent.remove();
+            // El elemento es un gasto
+            // remuevo el elemnto de la lista y reemplazo la nueva lista sin ese elemento
+            let tempList = this.itemExpenseList.filter((item) => {
+                return item.id !== id
+            });
+            this.itemExpenseList = tempList;
+            this.showBalance();
+        }
+        else if(parent.classList.contains('budget')){
+            parent.remove();
+            // El elemento es un ingreso (Budget)
+            let tempList = this.itemBudgetList.filter((item) => {
+                return item.id !== id
+            }); // me genero una lista temporal
+            // genero el nuevo listado sin el elemento
+            this.itemBudgetList = tempList;
+            this.showBalance();
+        }
     }
 
-    //delete Budget Element
-    deleteBudget(element) {
-        let id = parseInt(element.dataset.id);
-        let parent = element.parentElement.parentElement.parentElement.parentElement;
-        // elimino el elemento del DOM
-        //this.budgetList.remove(parent);
-        parent.remove();
-        let tempList = this.itemBudgetList.filter((item) => {
-            return item.id !== id
-        }); // me genero una lista temporal
-        // genero el nuevo listado sin el elemento
-        this.itemBudgetList = tempList;
-        this.showBalance();
-    }
+    
 }
 //Corremos esta funcion una vez corrio y se cargo el DOM
 function eventListeners() {
-    const budgetForm = $("#budget-form");
-    const expenseForm = $("#expense-form");
-    const expenseList = $("#expense-list");
-    const budgetList = $("#budget-list");
+    const genericForm = $("#generic-form");
+    const totalList = $("#total-list");
+    const typeSelect = $("#typeSelection");
+    let ingresoBtn = false;
+    let egresoBtn = false;
 
     // Instancio la clase UI (UserInterface)
     const ui = new UI();
 
-    // budget form submit
-    budgetForm.submit(function (event) {
-        event.preventDefault();
-        ui.submitBudgetForm();
-    });
+    ////////////////////////////////////
+    //////////     EVENTOS  ///////////
+    //////////////////////////////////
 
-    // Budget Click
-    budgetList.click(function (event) {
-        if (event.target.parentElement.classList.contains('edit-icon')) {
-            ui.editBudget(event.target.parentElement);
-        } else if (event.target.parentElement.classList.contains('delete-icon')) {
-            ui.deleteBudget(event.target.parentElement);
+    // Form submit
+    genericForm.submit(function (event) {
+        event.preventDefault();
+        if(ingresoBtn){ //Boton Ingreso Seleccionado
+            ui.submitForm(ingresoBtn);
+        } else if(egresoBtn){ //Boton Egreso Seleccionado
+            ui.submitForm(ingresoBtn);
+        }
+    });
+    
+    // Total List Click
+    totalList.click(function(event) {
+        if(event.target.parentElement.classList.contains('edit-icon')){
+            ui.editItem(event.target.parentElement);
+        }
+        else if(event.target.parentElement.classList.contains('delete-icon')){
+            ui.deleteItem(event.target.parentElement);
         }
     });
 
-    // expense form submit
-    expenseForm.on("submit", function (event) {
-        event.preventDefault();
-        ui.submitExpenseForm();
+    typeSelect.click(function(event){
+            
+        if(event.target.id === 'selectBudget'){
+            ingresoBtn = true;
+            egresoBtn =  !ingresoBtn;
+        }else if(event.target.id === 'selectExpense'){
+            egresoBtn =  true;
+            ingresoBtn = !egresoBtn;
+            
+        }
+        console.log('Apretado Boton Ingreso: '+ingresoBtn);
+        console.log('Apretado Boton Egreso: '+egresoBtn);
     });
 
-    // expense Click form submit (veo donde se hace click en el listafo Gastos)
-    expenseList.on("click", function (event) {
-        //console.log(event.target); // me fijo el evento que devuelve el click
-        if (event.target.parentElement.classList.contains('edit-icon')) {
-            ui.editExpense(event.target.parentElement)
-        } else if (event.target.parentElement.classList.contains('delete-icon')) {
-            ui.deleteExpense(event.target.parentElement)
-        }
-    });
 }
 
 // Este evento DOMContentLoaded es disparado cuando el documento HTML ha sido completamente cargado
@@ -323,7 +359,3 @@ $(document).ready(function () {
     console.log("DOM full loaded and parsed")
     eventListeners();
 })
-/*document.addEventListener('DOMContentLoaded', function () {
-    console.log("DOM full loaded and parsed")
-    eventListeners();
-})*/
