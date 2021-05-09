@@ -1,16 +1,46 @@
-
-
 .feedback-notification{
     display: none;
 }
 
 .showItem{
-    display: block;
-     
+    display: block;  
+}
+.hideItem{
+    display: none;
+}
+.generic-form{
+    margin: 15px;
+    padding: 5px;
+}
+#div-appInfo{
+    margin: 15px;
+    padding: 5px;
+    min-height: 10vh;
+}
+#div-form{
+    height: 80vh;
+}
+#divGlobalListado{
+    min-height: 40px;
+}
+#div-Listado{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 10px;
+    min-height: 30vh;
+    border-radius: 8px;
+    -webkit-box-shadow: 2px 0px 14px 5px rgba(0,0,0,0.43);
+    -moz-box-shadow: 2px 0px 14px 5px rgba(0,0,0,0.43);
+    box-shadow: 2px 0px 14px 5px rgba(0,0,0,0.43);
+}
+.errorField{
+    border-color: red;
+    border-width: 1px;
 }
 
-footer{
-    height: 20vh;
+.correctField{
+    border-color: green;
+    border-width: 1px;
 }
 
 .budget-description, .budget-amount, .budget-type{
@@ -46,8 +76,13 @@ footer{
     height: 3px;
     min-height: 3px;
 }
+
+/* ICONOS */
 ion-icon{
     color: black;
+}
+.iconoError{
+    color: red;
 }
 /* ///////  COLORES ///////// */
 
@@ -60,3 +95,45 @@ ion-icon{
 .showBlack{
     color: black;
 }
+
+
+/*/ button back to top */
+button.btnBackTop{
+    margin: 0 !important;
+    padding: 0 !important;
+    background: white;
+    height: 0px;
+    width: 0px;
+    overflow: hidden;
+    border-radius: 50px;
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    color: transparent;
+    clear: both;
+    visibility: hidden;
+    position: fixed;
+    cursor: pointer;
+    display: block;
+    border: none;
+    right: 50px;
+    bottom: 75px;
+    font-size: 0px;
+    outline: 0 !important;
+    z-index: 99;
+    transition: all .3s ease-in-out;
+  }
+  
+  button.btnBackTop.show {
+    display: block;
+    background: #fff;
+    font-size: 30px;
+    right: 25px;
+    bottom: 50px;
+    height: 50px;
+    width: 50px;
+    visibility: visible;
+    box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.25);
+    -webkit-box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.25);
+  }
+  

@@ -56,13 +56,12 @@ class UI {
             this.numberInput.val('');
             this.textInput.val('');
             // Feedback OK - Carga Exitosa
-            this.feedbackNotif.addClass('showItem');
+            this.feedbackNotif.fadeIn(1500).delay(3000).fadeOut(1500);
+            //this.feedbackNotif.addClass('showItem');
             this.feedbackNotif.html(`<p> Carga exitosa </p>`);
             this.feedbackNotif.removeClass('alert-danger');
             this.feedbackNotif.addClass('alert-success');
-            setTimeout(() => { // En cierto tiempo la alerta desaparece
-                this.feedbackNotif.removeClass('showItem');
-            }, 3000);
+            
             //////////////////////////////////////////////
             // Verifico si esta apretado boton Ingreso o Egreso
             if(valor === true){
@@ -99,30 +98,47 @@ class UI {
             }
             
         } else{ //condicion si hay algo erroneo
-            this.feedbackNotif.addClass('showItem');
+            this.feedbackNotif.fadeIn(1500).delay(3000).fadeOut(1500);
             this.feedbackNotif.html(`<p> Hay datos faltantes en el Formulario o el Monto es negativo</p>`);
             this.feedbackNotif.removeClass('alert-success');
             this.feedbackNotif.addClass('alert-danger');
-            setTimeout(() => { // En cierto tiempo la alerta desaparece
-                this.feedbackNotif.removeClass("showItem");
-            }, 3000);
+
         }
     }
 
     checkForm(){
         let controlOk = false;
+        let checkFormOk = null;
+        //Array de los inputs del Formulario
         const formArray = [this.numberInput, 
             this.textInput, this.category,
             this.account, this.dateInput];
+        let controlArray = [];
         for (const iterator of formArray) {
-            if(iterator.val()===""){
+            if(iterator.val()==="" || iterator.val()<0){
+                iterator.removeClass("correctField").addClass("errorField")
+                let span = iterator.parent().parent().children()[2];
+                span.classList.remove("hideItem")
                 controlOk = false;
             }
             else{
+                iterator.removeClass("errorField").addClass("correctField");
+                let span = iterator.parent().parent().children()[2];
+                span.classList.add("hideItem")
                 controlOk = true;
             }
+            controlArray.push(controlOk);
         }
-        return controlOk;
+        // Verifico que en el array no haya valores falsos
+        if (controlArray.reduce((curr,acc)=> acc+curr) == controlArray.length){
+            
+            checkFormOk = true;
+        }else{
+            
+            checkFormOk = false;
+        }
+        
+        return checkFormOk;
     }
     
     // addBudget (agregar INPUT)
@@ -130,11 +146,11 @@ class UI {
         this.totalList.prepend(`
         <div class="budget">
             <div class="budget-item d-flex justify-content-between align-items-center">
-                <div class="col-2 budget-list-item">20-04-2021</div>
+                <div class="col-2 budget-list-item">${income.date}</div>
                 <div class="col-2 budget-list-item text-uppercase">${income.title}</div>
                 <div class="col-2 budget-list-item">+$ ${income.amount}</div>
                 <div class="col-2 budget-list-item">Ingreso</div>
-                <div class="col-2 budget-list-item">S/N</div>
+                <div class="col-2 budget-list-item">${income.category}</div>
                 <div class="col-2 budget-icons">
                     <div class="row">
                         <a href="#" class="edit-icon mx-2" data-id="${income.id}">
@@ -157,11 +173,11 @@ class UI {
         this.totalList.prepend(`
         <div class="expense">
             <div class="expense-item d-flex justify-content-between align-items-center">
-                <div class="col-2 expense-list-item">20-04-2021</div>
+                <div class="col-2 expense-list-item">${expense.date}</div>
                 <div class="col-2 expense-list-item text-uppercase">${expense.title}</div>
                 <div class="col-2 expense-list-item">-$ ${expense.amount}</div>
                 <div class="col-2 expense-list-item">Gasto</div>
-                <div class="col-2 expense-list-item">S/N</div>
+                <div class="col-2 expense-list-item">${expense.category}</div>
                 <div class="col-2 expense-icons">
                     <div class="row">
                         <a href="#" class="edit-icon mx-2" data-id="${expense.id}">
@@ -230,7 +246,11 @@ class UI {
         let parent = element.parentElement.parentElement.parentElement.parentElement;
         
         if(parent.classList.contains('expense')){// El elemento es un gasto
-            parent.remove();
+            parent.fadeTo(1000,0.01, function () {
+                $(this).slideUp(150, function (){
+                    $(this).remove();
+                })
+            })
             //seleccion de la lista el elemento
             let expense = this.itemExpenseList.filter((item) => {
                 return item.id === id
@@ -308,8 +328,9 @@ function eventListeners() {
     const genericForm = $("#generic-form");
     const totalList = $("#total-list");
     const typeSelect = $("#typeSelection");
-    let ingresoBtn = false;
-    let egresoBtn = false;
+    const btnListado = $("#btnListado");
+    let ingresoBtn = null;
+    let egresoBtn = null;
 
     // Instancio la clase UI (UserInterface)
     const ui = new UI();
@@ -323,8 +344,18 @@ function eventListeners() {
         event.preventDefault();
         if(ingresoBtn){ //Boton Ingreso Seleccionado
             ui.submitForm(ingresoBtn);
+            
+
+            $("#form-submit").animate({
+                height: "+=100px",
+                width: "+=100px" 
+            }).delay(1000).animate({
+                height: "-=100vh",
+                width: "-=100vw"
+            })
         } else if(egresoBtn){ //Boton Egreso Seleccionado
             ui.submitForm(ingresoBtn);
+            
         }
     });
     
@@ -339,17 +370,44 @@ function eventListeners() {
     });
 
     typeSelect.click(function(event){
-            
+        ingresoBtn = null;
+        egresoBtn =  null;
         if(event.target.id === 'selectBudget'){
             ingresoBtn = true;
             egresoBtn =  !ingresoBtn;
+            $("#form-submit").removeClass("btn-outline-dark btn-outline-danger").addClass("btn-outline-primary");
+
         }else if(event.target.id === 'selectExpense'){
             egresoBtn =  true;
             ingresoBtn = !egresoBtn;
+            $("#form-submit").removeClass("btn-outline-dark btn-outline-primary").addClass("btn-outline-danger");
             
         }
-        console.log('Apretado Boton Ingreso: '+ingresoBtn);
-        console.log('Apretado Boton Egreso: '+egresoBtn);
+        
+    });
+
+    // Toggle para Mostrar Listado de Gastos / Ingresos
+    btnListado.click( () => {
+        $("#div-Listado").toggle("slow");
+        $("html, body").animate({scrollTop: $(document).height()}, 1000) //Voy al final del documento para ver el listado
+    })
+    ///////////////////////////////////////
+    // Boton para top pagina
+    var amountScrolled = 120;
+    
+    $(window).scroll(function() {
+    if ( $(window).scrollTop() > amountScrolled ) {
+        $('button.btnBackTop').addClass("show");
+    } else {
+        $('button.btnBackTop').removeClass("show");
+    }
+    });
+
+        // Con el boton voy arriba de todo
+    $('button.btnBackTop').click(function() {
+    $('html, body').animate({
+        scrollTop: 0
+    }, 800);
     });
 
 }

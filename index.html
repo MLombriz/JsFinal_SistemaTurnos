@@ -28,12 +28,7 @@
 
     </header>
     <main>
-        <div>
-            <p>La idea del proyecto es lograr una interface en la cual el usuario pueda cargar sus ingresos
-                y egresos, categorizarlos, visualizarlos editar o eliminarlos.
-            </p>
-        </div>
-        <div class="container-fluid">
+        <div class="container-fluid" id="div-form">
             <div class="row justify-content-center">
                 <h2 class="text-uppercase">Plataforma para cargar Gastos / Ingresos</h2>
                 <!-- FORMULARIO DE CARGA -->
@@ -42,7 +37,7 @@
                     <div class="select-form container-fluid">
                         <div class="row" id="typeSelection">
                             <div class="col-md-6">
-                                <button id="selectBudget" class="btn btn-outline-success btn-block expense-submit">Ingreso</button>
+                                <button id="selectBudget" class="btn btn-outline-primary btn-block expense-submit">Ingreso</button>
                             </div>
                             <div class="col-md-6">
                                 <button id="selectExpense" class="btn btn-outline-danger btn-block expense-submit">Egreso</button>
@@ -62,7 +57,7 @@
                                     Ingresar fecha del evento
                                 </small>
                             </div>
-                            <span class="col-sm-1"><ion-icon name="close-circle" size="large"></ion-icon></span> 
+                            <span class="col-sm-1 iconoError hideItem"><ion-icon name="close-circle" size="large"></ion-icon></span> 
                         </div>
 
                         <div class="form-group row">
@@ -70,15 +65,15 @@
                             <div class="col-sm-9">
                                 <select id="generic-account" class="form-control">
                                     <option value=""></option>
-                                    <option value="efectivo">Efectivo</option>
-                                    <option value="tarjet">Tarjeta Credito</option>
-                                    <option value="cuenta">Cuenta</option>
+                                    <option>Efectivo</option>
+                                    <option>Tarjeta Credito</option>
+                                    <option>Cuenta</option>
                                 </select>
                                 <small id="small-account" class="form-text text-muted">
                                     Seleccionar Cuenta
                                 </small>
                             </div>
-                            <span class="col-sm-1"><ion-icon name="close-circle" size="large"></ion-icon></span> 
+                            <span class="col-sm-1 iconoError hideItem"><ion-icon name="close-circle" size="large"></ion-icon></span> 
                         </div>
                         
                         <div class="form-group row">
@@ -86,15 +81,15 @@
                             <div class="col-sm-9">
                                 <select id="generic-category" class="form-control">
                                     <option value=""></option>
-                                    <option value="cat-venta">Venta</option>
-                                    <option value="cat-comida">Comida</option>
-                                    <option value="cat-salario">Salario</option>
+                                    <option>Venta</option>
+                                    <option>Comida</option>
+                                    <option>Salario</option>
                                 </select>
                                 <small id="small-category" class="form-text text-muted">
                                     Seleccionar Categoria
                                 </small>
                             </div>
-                            <span class="col-sm-1"><ion-icon name="close-circle" size="large"></ion-icon></span> 
+                            <span class="col-sm-1 iconoError hideItem"><ion-icon name="close-circle" size="large"></ion-icon></span> 
                         </div>
 
                         <div class="form-group row">
@@ -105,7 +100,7 @@
                                     Ingresar Monto (caracteres numericos)
                                 </small>
                             </div>
-                            <span class="col-sm-1"><ion-icon name="close-circle" size="large"></ion-icon></span> 
+                            <span class="col-sm-1 iconoError hideItem"><ion-icon name="close-circle" size="large"></ion-icon></span> 
                         </div>
 
                         <div class="form-group row">
@@ -116,13 +111,13 @@
                                     Ingresar Descripcion del evento con longitud entre 5-12 caracteres
                                 </small>
                             </div>
-                            <span class="col-sm-1"><ion-icon name="close-circle" size="large"></ion-icon></span> 
+                            <span class="col-sm-1 iconoError hideItem"><ion-icon name="close-circle" size="large"></ion-icon></span> 
                         </div>
 
                         
                         <!-- Submit Income Form -->
                         <div class="form-group row justify-content-center">
-                            <button type="submit" id="budget-submit" class="btn  btn-outline-success budget-submit col-sm-6">Grabar</button>
+                            <button type="submit" id="form-submit" class="btn  btn-outline-dark form-submit col-sm-6">Grabar</button>
                             <!-- Feedback -->
                             <small class="feedback-notification text-capitalize col-sm-7 form-text text-muted" id="feedback-notification">Feedback</small>
                         </div>
@@ -133,7 +128,7 @@
                 <div class="w-100"></div> <!-- Genero un salto de fila -->
                 
                 <!-- APP INFO -->
-                <div class="col-9">
+                <div class="col-9" id="div-appInfo">
                     <div class="row justify-content-center">
                         <div class="col-4 text-center">
                             <h6 class="text-uppercase">Total Ingresos</h6>
@@ -156,10 +151,13 @@
                     </div>
                 </div>
                 <!-- LISTADO -->
-                <div class="col-md-11">
+                <div class="col-md-11" id="divGlobalListado">
                     <!-- Listado Gastos -->
-                    <div>
-                        <h4>Listado</h4>
+                    <div class="div-btnListado">
+                        <button id="btnListado" class="btn btn-warning">Mostrar Listado</button>
+                    </div>
+                    <div id="div-Listado" class="hideItem">
+                        <h4>Listado</h4>                       
                         <div class="row justify-content-center text-capitalize">
                             <div class="col-2 title-list-item text-uppercase">Fecha</div>
                             <div class="col-2 title-list-item text-uppercase">Descripcion</div>
@@ -177,30 +175,7 @@
             </div>
         </div>
     </main>
-    <footer>
-
-    </footer>
-
-    <!-- Ingresar usuario para Login -->
-    <!-- AGREGAR UN LOG-IN CON USUARIO PARA ACTIVAR LAS FUNCIONES DE LA PAGINA-->
-    <!--<div class="logIn">
-                <h2>Log-In</h2>
-                <form action="" id="formInicial">
-                    <label for="name">Nombre:</label>
-                    <input type="name" id="nameLogIn" placeholder="Ingrese Nombre">
-                    <br>
-                    <label for="surnname">Apellido:</label>
-                    <input type="surname" id="surnameLogIn" placeholder="Ingrese Apellido">
-                    <br>
-                    <label for="password">Clave:</label>
-                    <input type="password" id="passwordLogIn" placeholder="Ingrese Clave">
-                    <br>
-                    <label for="email">Mail:</label>
-                    <input type="email" name="" id="emailLogIn" placeholder="Ingresar E-mail">
-                    <br>
-                    <button id="btnSesion" type="submit">Iniciar Sesion</button>
-                </form>
-            </div>-->
+    <button class="btnBackTop" type="button"><ion-icon name="arrow-up"></ion-icon></button>
 
     <!-- JQuery Script -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
