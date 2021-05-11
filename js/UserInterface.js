@@ -1,3 +1,4 @@
+
 class UI {
     constructor() {
         // Datos Cargados por USUARIO
@@ -24,15 +25,15 @@ class UI {
         // Listas Ingresos / Gastos
         
         this.totalList = $("#total-list");
-        this.itemID = 0;
+        this.itemID = 0; //valor unico e irrepetible
 
-        //////////////////////////////////////////////
-        // Elementos posibles a ELIMINAR
         this.itemExpenseList = []; //Lista de Gastos
         this.itemBudgetList = []; //Lista de Ingresos
-
+        this.itemTotalList = []; //Listado Completo de Gastos e Ingresos para guardar
         this.expenseList = $("#expense-list");
         this.budgetList = $("#budget-list");
+        
+        // Variables que no estan en uso
         this.itemExpenseID = 0;
         this.itemBudgetID = 0;
         
@@ -72,10 +73,12 @@ class UI {
                     title: title,
                     amount: parseInt(amount),
                     category: category,
+                    type: "budget",
                     account: account,
                 } 
                 this.itemID++;
                 this.itemBudgetList.push(income);
+                this.itemTotalList.push(income); // GUARDO en una lista total para posterior JSON
                 // Instancio funciones creadas
                 this.addBudget(income);
                 this.showBalance();
@@ -88,10 +91,12 @@ class UI {
                     title: title,
                     amount: parseInt(amount),
                     category: category,
+                    type: "expense",
                     account: account,
                 } 
                 this.itemID++;
                 this.itemExpenseList.push(expense);
+                this.itemTotalList.push(expense); // GUARDO en una lista total para posterior JSON
                 // Instancio funciones creadas
                 this.addExpense(expense);
                 this.showBalance();
@@ -144,11 +149,11 @@ class UI {
     // addBudget (agregar INPUT)
     addBudget(income) {
         this.totalList.prepend(`
-        <div class="budget">
+        <div class="budget btn-light">
             <div class="budget-item d-flex justify-content-between align-items-center">
                 <div class="col-2 budget-list-item">${income.date}</div>
                 <div class="col-2 budget-list-item text-uppercase">${income.title}</div>
-                <div class="col-2 budget-list-item">+$ ${income.amount}</div>
+                <div class="col-2 budget-list-item budgetAmount">+$ ${income.amount}</div>
                 <div class="col-2 budget-list-item">Ingreso</div>
                 <div class="col-2 budget-list-item">${income.category}</div>
                 <div class="col-2 budget-icons">
@@ -171,11 +176,11 @@ class UI {
     // addExpense (agregar GASTO)
     addExpense(expense) {
         this.totalList.prepend(`
-        <div class="expense">
+        <div class="expense btn-light">
             <div class="expense-item d-flex justify-content-between align-items-center">
                 <div class="col-2 expense-list-item">${expense.date}</div>
                 <div class="col-2 expense-list-item text-uppercase">${expense.title}</div>
-                <div class="col-2 expense-list-item">-$ ${expense.amount}</div>
+                <div class="col-2 expense-list-item expenseAmount">-$ ${expense.amount}</div>
                 <div class="col-2 expense-list-item">Gasto</div>
                 <div class="col-2 expense-list-item">${expense.category}</div>
                 <div class="col-2 expense-icons">
@@ -212,6 +217,7 @@ class UI {
             this.balance.removeClass("showRed", "showGreen");
             this.balance.addClass("showBlack");
         }
+
     }
     // Calculo el Ingreso Total (totalbudget)
     totalBudget() {
@@ -324,11 +330,14 @@ class UI {
     
 }
 //Corremos esta funcion una vez corrio y se cargo el DOM
+// Dispone de todos los eventos
 function eventListeners() {
     const genericForm = $("#generic-form");
     const totalList = $("#total-list");
     const typeSelect = $("#typeSelection");
     const btnListado = $("#btnListado");
+    const $LoadJson = $('#btnLoadJson');
+    const $SaveJson = $('#btnSaveJson');
     let ingresoBtn = null;
     let egresoBtn = null;
 
@@ -344,18 +353,9 @@ function eventListeners() {
         event.preventDefault();
         if(ingresoBtn){ //Boton Ingreso Seleccionado
             ui.submitForm(ingresoBtn);
-            
-
-            $("#form-submit").animate({
-                height: "+=100px",
-                width: "+=100px" 
-            }).delay(1000).animate({
-                height: "-=100vh",
-                width: "-=100vw"
-            })
-        } else if(egresoBtn){ //Boton Egreso Seleccionado
+        } 
+        else if(egresoBtn){ //Boton Egreso Seleccionado
             ui.submitForm(ingresoBtn);
-            
         }
     });
     
@@ -369,6 +369,7 @@ function eventListeners() {
         }
     });
 
+    // Seleccion de Ingreso o Egreso
     typeSelect.click(function(event){
         ingresoBtn = null;
         egresoBtn =  null;
@@ -391,7 +392,61 @@ function eventListeners() {
         $("#div-Listado").toggle("slow");
         $("html, body").animate({scrollTop: $(document).height()}, 1000) //Voy al final del documento para ver el listado
     })
-    ///////////////////////////////////////
+
+    // Implementando JSON y AJAX
+    $LoadJson.click( () => {
+        
+        $.getJSON("./data/dataTotalList.json",function(result){
+            $.each(result,function(i,item){
+                if(item.type === "budget"){
+                    ui.itemBudgetList.push(item);
+                    ui.addBudget(item);
+                    ui.showBalance();
+                }
+                else if(item.type === "expense"){
+                    ui.itemExpenseList.push(item);
+                    ui.addExpense(item);
+                    ui.showBalance();
+                }
+            })
+        })
+    })
+    $SaveJson.click( () => {
+        console.log('Boton Guardar Apretado, actualmente no funciona luego va a guardar un JSON con el array mostrado: ');
+        console.log(ui.itemTotalList);
+    })
+    
+    /*$("#btnAlmacenarJson").click((event) =>{
+        // Guardado de Informacion en JSON 
+        const urlJSONExpense = "./data/dataExpense.json";
+        const urlJSONBudget = "./data/dataBudget.json";
+        let expenseList = ui.itemExpenseList;
+        let budgetList = ui.itemBudgetList;
+        console.log(ui.itemBudgetList);
+        if(event.target.id === 'btnAlmacenarJson'){
+            if(expenseList=="" || budgetList==""){
+                for (const iterator of expenseList) {
+                    $.post(urlJSONExpense, iterator, (respuesta, estado) => {
+                        if(estado === "success"){
+                            console.log(`Se guardo ${respuesta.title} con id: ${respuesta.id}`);
+                        }
+                    }) 
+                }
+                for (const iterator of budgetList) {
+                    $.post(urlJSONBudget, iterator, (respuesta, estado) => {
+                        if(estado === "success"){
+                            console.log(`Se guardo ${respuesta.title} con id: ${respuesta.id}`);
+                        }
+                    }) 
+                }
+            }else{
+                console.log("ERROR - Faltan Datos");
+                alert("No hay suficientes datos para guardar. Debe haber como minimo un gasto y un ingreso")
+            }
+        }
+
+    })*/
+
     // Boton para top pagina
     var amountScrolled = 120;
     
@@ -417,3 +472,4 @@ $(document).ready(function () {
     console.log("DOM full loaded and parsed")
     eventListeners();
 })
+

@@ -151,13 +151,20 @@
                     </div>
                 </div>
                 <!-- LISTADO -->
-                <div class="col-md-11" id="divGlobalListado">
+                <div class="container-fluid" id="divGlobalListado">
                     <!-- Listado Gastos -->
                     <div class="div-btnListado">
                         <button id="btnListado" class="btn btn-warning">Mostrar Listado</button>
                     </div>
-                    <div id="div-Listado" class="hideItem">
-                        <h4>Listado</h4>                       
+                    <div id="div-Listado" class="hideItem justify-content-center">
+                        <div class="div-btnJSON">
+                            <div class="row">
+                                <h4>Listado</h4> 
+                                <button id="btnLoadJson" class="btnLoadJson btn btn-outline-dark" >Cargar Datos</button>
+                                <button id="btnSaveJson" class="btnSaveJson btn btn-outline-dark" disabled>Guardar Datos</button>
+                            </div>
+                        </div>
+                                              
                         <div class="row justify-content-center text-capitalize">
                             <div class="col-2 title-list-item text-uppercase">Fecha</div>
                             <div class="col-2 title-list-item text-uppercase">Descripcion</div>
@@ -166,7 +173,7 @@
                             <div class="col-2 title-list-item text-uppercase">Categoria</div>
                             <div class="col-2 title-list-item text-uppercase">Accion</div>
                         </div>
-                        <div class="total-list" id="total-list">
+                        <div class="total-list container-fluid" id="total-list">
 
                         </div>
                     </div>
@@ -175,10 +182,12 @@
             </div>
         </div>
     </main>
-    <button class="btnBackTop" type="button"><ion-icon name="arrow-up"></ion-icon></button>
-
+    <!-- BTN to TOP -->
+    <button class="btnBackTop" type="button"><ion-icon name="arrow-up" class="arrowUpIcon"></ion-icon></button>
+    
     <!-- JQuery Script -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <!--<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>-->
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     <!-- SCRIPTS -->
     <script src="./js/UserInterface.js"></script>
     <script src="./js/clases.js"></script>

@@ -1,0 +1,45 @@
+[{
+    "id": 80,
+    "date": "2021-05-11",
+    "title": "SALARIO",
+    "amount": 1000,
+    "category": "Sueldo",
+    "type": "budget",
+    "account": "efectivo"
+},
+{
+    "id": 81,
+    "date": "2021-05-11",
+    "title": "Alquiler",
+    "amount": 500,
+    "category": "Casa",
+    "type": "expense",
+    "account": "efectivo"
+},
+{
+    "id": 82,
+    "date": "2021-05-11",
+    "title": "Venta Mueble",
+    "amount": 700,
+    "category": "Venta",
+    "type": "budget",
+    "account": "efectivo"
+},
+{
+    "id": 83,
+    "date": "2021-05-11",
+    "title": "Comida",
+    "amount": 300,
+    "category": "Comida",
+    "type": "expense",
+    "account": "efectivo"
+},
+{
+    "id": 84,
+    "date": "2021-05-11",
+    "title": "Sube Mensual",
+    "amount": 400,
+    "category": "Transporte",
+    "type": "expense",
+    "account": "efectivo"
+}]

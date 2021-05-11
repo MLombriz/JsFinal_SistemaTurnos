@@ -1,3 +1,6 @@
+body{
+    display: block;
+}
 .feedback-notification{
     display: none;
 }
@@ -59,33 +62,41 @@
 }
 .expense{
     text-align: center;
-    background-color: red;
-    color: white;
+    /*background-color: rgba(255, 0, 0, 0.384);
+    color: white;*/
     border-radius: 8px;
     border: 2px solid white;
 }
+.expenseAmount{
+    font-size: larger;
+    color: red;
+}
+.expense:hover, .budget:hover{
+    font-weight: bold;
+}
 .budget{
     text-align: center;
-    background-color: green;
-    color: white;
+    /*background-color: green;
+    color: white;*/
     border-radius: 8px;
     border: 2px solid white;
+}
+.budgetAmount{
+    font-size: larger;
+    color: blue;
 }
 .list-space{
     background-color: black;
     height: 3px;
     min-height: 3px;
 }
-
-/* ICONOS */
-ion-icon{
+.arrowUpIcon{
     color: black;
 }
 .iconoError{
     color: red;
 }
 /* ///////  COLORES ///////// */
-
 .showGreen{
     color: green;
 }
@@ -95,8 +106,19 @@ ion-icon{
 .showBlack{
     color: black;
 }
-
-
+.btnLoadJson{
+    display: block;
+    text-align: center;
+    margin: 10px;
+}
+.btnSaveJson{
+    display: block;
+    text-align: center;
+    margin: 10px;
+}
+.div-btnJSON{
+    margin: 10px;
+}
 /*/ button back to top */
 button.btnBackTop{
     margin: 0 !important;
