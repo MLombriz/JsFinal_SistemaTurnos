@@ -1,10 +1,16 @@
-body{
-    display: block;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style-type: none; 
 }
 .feedback-notification{
     display: none;
 }
-
+#footer{
+    min-height: 100px;
+}
 .showItem{
     display: block;  
 }
@@ -24,8 +30,9 @@ body{
     height: 80vh;
 }
 #divGlobalListado{
-    min-height: 40px;
+    min-height: 100px;
 }
+
 #div-Listado{
     margin-top: 20px;
     margin-bottom: 20px;
@@ -118,6 +125,20 @@ body{
 }
 .div-btnJSON{
     margin: 10px;
+}
+.budget-icon, .balance-icon, .expense-icon{
+    font-size: 70px;
+    
+}
+.selectedBudget{
+    box-shadow: 0px 0px 17px 0px #1266F1;
+    background: #1266F1;
+    color: #ffffff;
+}
+.selectedExpense{
+    box-shadow: 0px 0px 17px 0px #F93154;
+    background: #f93154;
+    color: white;
 }
 /*/ button back to top */
 button.btnBackTop{

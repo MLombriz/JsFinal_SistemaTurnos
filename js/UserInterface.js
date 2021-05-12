@@ -1,4 +1,3 @@
-
 class UI {
     constructor() {
         // Datos Cargados por USUARIO
@@ -15,7 +14,7 @@ class UI {
         this.incomeBtn = $("#selectBudget");
         this.expenseBtn = $("#selectExpense");
         this.typeSelect = $("#typeSelection");
-        
+
         // APP INFO VALORES
         this.budgetAmount = $("#budget-amount");
         this.expenseAmount = $("#expense-amount");
@@ -23,7 +22,7 @@ class UI {
         this.balance = $("#balance");
 
         // Listas Ingresos / Gastos
-        
+
         this.totalList = $("#total-list");
         this.itemID = 0; //valor unico e irrepetible
 
@@ -32,17 +31,18 @@ class UI {
         this.itemTotalList = []; //Listado Completo de Gastos e Ingresos para guardar
         this.expenseList = $("#expense-list");
         this.budgetList = $("#budget-list");
-        
+
         // Variables que no estan en uso
         this.itemExpenseID = 0;
         this.itemBudgetID = 0;
-        
+
 
     }
 
     // Declaramos los Metodos
     // Grabar item cargado ("Submit")
-    submitForm(valor){
+    submitForm(valor) {
+
         // guardo los valores cargados por UI
         const fecha = this.dateInput.val();
         const account = this.account.val();
@@ -50,7 +50,13 @@ class UI {
         const amount = this.numberInput.val();
         const title = this.textInput.val();
 
-        if(this.checkForm() && (amount > 0)){//condicion si todo esta Ok
+        if ((this.checkForm() && (amount > 0) )) { //condicion si todo esta Ok
+            //Para dejar todos los valores vacios
+            /*$('input[type=text]').each(function () {
+                $(this).val('');
+            });*/
+        
+            
             this.dateInput.val('');
             this.account.val('');
             this.category.val('');
@@ -62,10 +68,10 @@ class UI {
             this.feedbackNotif.html(`<p> Carga exitosa </p>`);
             this.feedbackNotif.removeClass('alert-danger');
             this.feedbackNotif.addClass('alert-success');
-            
+
             //////////////////////////////////////////////
             // Verifico si esta apretado boton Ingreso o Egreso
-            if(valor === true){
+            if (valor === true) {
                 // Creo objeto INCOME
                 const income = {
                     id: this.itemID,
@@ -75,13 +81,17 @@ class UI {
                     category: category,
                     type: "budget",
                     account: account,
-                } 
+                }
                 this.itemID++;
                 this.itemBudgetList.push(income);
                 this.itemTotalList.push(income); // GUARDO en una lista total para posterior JSON
+                
+                $('#form-submit').fadeOut(800);
                 // Instancio funciones creadas
                 this.addBudget(income);
                 this.showBalance();
+
+
 
             } else {
                 // Creo objeto EXPENSE
@@ -93,7 +103,7 @@ class UI {
                     category: category,
                     type: "expense",
                     account: account,
-                } 
+                }
                 this.itemID++;
                 this.itemExpenseList.push(expense);
                 this.itemTotalList.push(expense); // GUARDO en una lista total para posterior JSON
@@ -101,32 +111,33 @@ class UI {
                 this.addExpense(expense);
                 this.showBalance();
             }
-            
-        } else{ //condicion si hay algo erroneo
+
+        } else { //condicion si hay algo erroneo
             this.feedbackNotif.fadeIn(1500).delay(3000).fadeOut(1500);
             this.feedbackNotif.html(`<p> Hay datos faltantes en el Formulario o el Monto es negativo</p>`);
             this.feedbackNotif.removeClass('alert-success');
             this.feedbackNotif.addClass('alert-danger');
 
         }
+
     }
 
-    checkForm(){
+    checkForm() {
         let controlOk = false;
         let checkFormOk = null;
         //Array de los inputs del Formulario
-        const formArray = [this.numberInput, 
+        const formArray = [this.numberInput,
             this.textInput, this.category,
-            this.account, this.dateInput];
+            this.account, this.dateInput
+        ];
         let controlArray = [];
         for (const iterator of formArray) {
-            if(iterator.val()==="" || iterator.val()<0){
+            if (iterator.val() === "" || iterator.val() < 0) {
                 iterator.removeClass("correctField").addClass("errorField")
                 let span = iterator.parent().parent().children()[2];
                 span.classList.remove("hideItem")
                 controlOk = false;
-            }
-            else{
+            } else {
                 iterator.removeClass("errorField").addClass("correctField");
                 let span = iterator.parent().parent().children()[2];
                 span.classList.add("hideItem")
@@ -135,21 +146,21 @@ class UI {
             controlArray.push(controlOk);
         }
         // Verifico que en el array no haya valores falsos
-        if (controlArray.reduce((curr,acc)=> acc+curr) == controlArray.length){
-            
+        if (controlArray.reduce((curr, acc) => acc + curr) == controlArray.length) {
+
             checkFormOk = true;
-        }else{
-            
+        } else {
+
             checkFormOk = false;
         }
-        
+
         return checkFormOk;
     }
-    
+
     // addBudget (agregar INPUT)
     addBudget(income) {
         this.totalList.prepend(`
-        <div class="budget btn-light">
+        <div class="budget btn-light" id="expense${income.id}">
             <div class="budget-item d-flex justify-content-between align-items-center">
                 <div class="col-2 budget-list-item">${income.date}</div>
                 <div class="col-2 budget-list-item text-uppercase">${income.title}</div>
@@ -158,14 +169,12 @@ class UI {
                 <div class="col-2 budget-list-item">${income.category}</div>
                 <div class="col-2 budget-icons">
                     <div class="row">
-                        <a href="#" class="edit-icon mx-2" data-id="${income.id}">
+                        <span href="#" class="edit-icon mx-2" data-id="${income.id}">
                             <ion-icon name="create" size="large" id="edit-button"></ion-icon>
-                            <!--<button class="btn  btn-sm btn-warning" id="edit-button">editar</button>-->
-                        </a>
-                        <a href="#" class="delete-icon" data-id="${income.id}">
-                            <ion-icon name="trash" size="large" id="delete-button"></ion-icon>
-                            <!--<button class="btn btn-sm btn-danger" id="delete-button">borrar</button>-->
-                        </a>
+                        </span>
+                        <span href="#" class="delete-icon" data-id="${income.id}">
+                            <ion-icon name="trash" size="large" "></ion-icon>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -176,7 +185,7 @@ class UI {
     // addExpense (agregar GASTO)
     addExpense(expense) {
         this.totalList.prepend(`
-        <div class="expense btn-light">
+        <div class="expense btn-light" id="expense${expense.id}">
             <div class="expense-item d-flex justify-content-between align-items-center">
                 <div class="col-2 expense-list-item">${expense.date}</div>
                 <div class="col-2 expense-list-item text-uppercase">${expense.title}</div>
@@ -185,14 +194,13 @@ class UI {
                 <div class="col-2 expense-list-item">${expense.category}</div>
                 <div class="col-2 expense-icons">
                     <div class="row">
-                        <a href="#" class="edit-icon mx-2" data-id="${expense.id}">
+                        <span href="#" class="edit-icon mx-2" data-id="${expense.id}">
                             <ion-icon name="create" size="large" id="edit-button"></ion-icon>
-                            <!--<button class="btn  btn-sm btn-warning" id="edit-button">editar</button>-->
-                        </a>
-                        <a href="#" class="delete-icon" data-id="${expense.id}">
+                        </span>
+                        <span href="#" class="delete-icon" data-id="${expense.id}">
                             <ion-icon name="trash" size="large" id="delete-button"></ion-icon>
                             <!--<button class="btn btn-sm btn-danger" id="delete-button">borrar</button>-->
-                        </a>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -247,16 +255,13 @@ class UI {
         return totalExpense;
     }
     // edit List Item 
-    editItem(element){
+    editItem(element) {
         let id = parseInt(element.dataset.id);
         let parent = element.parentElement.parentElement.parentElement.parentElement;
-        
-        if(parent.classList.contains('expense')){// El elemento es un gasto
-            parent.fadeTo(1000,0.01, function () {
-                $(this).slideUp(150, function (){
-                    $(this).remove();
-                })
-            })
+
+        if (parent.classList.contains('expense')) { // El elemento es un gasto
+
+            parent.remove();
             //seleccion de la lista el elemento
             let expense = this.itemExpenseList.filter((item) => {
                 return item.id === id
@@ -276,8 +281,8 @@ class UI {
             this.dateInput.val(expense[0].date);
             this.textInput.val(expense[0].title);
             this.numberInput.val(expense[0].amount);
-        }
-        else if(parent.classList.contains('budget')){// El elemento es un ingreso (Budget)
+        } else if (parent.classList.contains('budget')) { // El elemento es un ingreso (Budget)
+
             parent.remove();
             // elimino el elemento de la lista Budget
             let budget = this.itemBudgetList.filter((item) => {
@@ -301,11 +306,11 @@ class UI {
         }
     }
     // delete Item List EXPENSE / INCOME
-    deleteItem(element){
+    deleteItem(element) {
         let id = parseInt(element.dataset.id);
         let parent = element.parentElement.parentElement.parentElement.parentElement;
-        
-        if(parent.classList.contains('expense')){
+
+        if (parent.classList.contains('expense')) {
             parent.remove();
             // El elemento es un gasto
             // remuevo el elemnto de la lista y reemplazo la nueva lista sin ese elemento
@@ -314,9 +319,9 @@ class UI {
             });
             this.itemExpenseList = tempList;
             this.showBalance();
-        }
-        else if(parent.classList.contains('budget')){
+        } else if (parent.classList.contains('budget')) {
             parent.remove();
+
             // El elemento es un ingreso (Budget)
             let tempList = this.itemBudgetList.filter((item) => {
                 return item.id !== id
@@ -327,7 +332,7 @@ class UI {
         }
     }
 
-    
+
 }
 //Corremos esta funcion una vez corrio y se cargo el DOM
 // Dispone de todos los eventos
@@ -348,62 +353,83 @@ function eventListeners() {
     //////////     EVENTOS  ///////////
     //////////////////////////////////
 
+    // Seleccion de Ingreso o Egreso
+    typeSelect.click(function (event) {
+        ingresoBtn = null;
+        egresoBtn = null;
+        if (event.target.id === 'selectBudget') {
+
+            ingresoBtn = true;
+            egresoBtn = !ingresoBtn;
+            $("#form-submit").removeClass("btn-outline-dark btn-outline-danger").addClass("btn-outline-primary");
+            $('#selectBudget').addClass("selectedBudget");
+            $('#selectExpense').removeClass("selectedExpense");
+            // Habilito el boton de Guardado de Informacion
+            $('#form-submit').slideDown(500);
+            //$('#form-submit').prop('disabled', false);
+
+        } else if (event.target.id === 'selectExpense') {
+            egresoBtn = true;
+            ingresoBtn = !egresoBtn;
+            $("#form-submit").removeClass("btn-outline-dark btn-outline-primary").addClass("btn-outline-danger");
+            $('#selectBudget').removeClass("selectedBudget");
+            $('#selectExpense').addClass("selectedExpense");
+            // Habilito el boton de Guardado de Informacion
+            $('#form-submit').slideDown(500);
+            //$('#form-submit').prop('disabled', false);
+        }
+
+    });
+
+
     // Form submit
     genericForm.submit(function (event) {
         event.preventDefault();
-        if(ingresoBtn){ //Boton Ingreso Seleccionado
+        if (ingresoBtn) { //Boton Ingreso Seleccionado
             ui.submitForm(ingresoBtn);
-        } 
-        else if(egresoBtn){ //Boton Egreso Seleccionado
+        } else if (egresoBtn) { //Boton Egreso Seleccionado
             ui.submitForm(ingresoBtn);
-        }
-    });
-    
-    // Total List Click
-    totalList.click(function(event) {
-        if(event.target.parentElement.classList.contains('edit-icon')){
-            ui.editItem(event.target.parentElement);
-        }
-        else if(event.target.parentElement.classList.contains('delete-icon')){
-            ui.deleteItem(event.target.parentElement);
         }
     });
 
-    // Seleccion de Ingreso o Egreso
-    typeSelect.click(function(event){
-        ingresoBtn = null;
-        egresoBtn =  null;
-        if(event.target.id === 'selectBudget'){
-            ingresoBtn = true;
-            egresoBtn =  !ingresoBtn;
-            $("#form-submit").removeClass("btn-outline-dark btn-outline-danger").addClass("btn-outline-primary");
+    // Total List Click event
+    totalList.click(function (event) {
+        let element = event.target.parentElement
+        let id = parseInt(element.dataset.id);
 
-        }else if(event.target.id === 'selectExpense'){
-            egresoBtn =  true;
-            ingresoBtn = !egresoBtn;
-            $("#form-submit").removeClass("btn-outline-dark btn-outline-primary").addClass("btn-outline-danger");
-            
+        if (element.classList.contains('edit-icon')) {
+
+            ui.editItem(element);
+            // Voy a la parte superior para Editar el Formulario
+            $('html, body').animate({
+                scrollTop: 0
+            }, 800);
+
+        } else if (element.classList.contains('delete-icon')) {
+            ui.deleteItem(element);
         }
-        
     });
+
+
 
     // Toggle para Mostrar Listado de Gastos / Ingresos
-    btnListado.click( () => {
+    btnListado.click(() => {
         $("#div-Listado").toggle("slow");
-        $("html, body").animate({scrollTop: $(document).height()}, 1000) //Voy al final del documento para ver el listado
+        $("html, body").animate({
+            scrollTop: $(document).height()
+        }, 1000) //Voy al final del documento para ver el listado
     })
 
     // Implementando JSON y AJAX
-    $LoadJson.click( () => {
-        
-        $.getJSON("./data/dataTotalList.json",function(result){
-            $.each(result,function(i,item){
-                if(item.type === "budget"){
+    $LoadJson.click(() => {
+
+        $.getJSON("./data/dataTotalList.json", function (result) {
+            $.each(result, function (i, item) {
+                if (item.type === "budget") {
                     ui.itemBudgetList.push(item);
                     ui.addBudget(item);
                     ui.showBalance();
-                }
-                else if(item.type === "expense"){
+                } else if (item.type === "expense") {
                     ui.itemExpenseList.push(item);
                     ui.addExpense(item);
                     ui.showBalance();
@@ -411,58 +437,27 @@ function eventListeners() {
             })
         })
     })
-    $SaveJson.click( () => {
-        console.log('Boton Guardar Apretado, actualmente no funciona luego va a guardar un JSON con el array mostrado: ');
+    $SaveJson.click(() => {
+        // Todavia no esta implementado
         console.log(ui.itemTotalList);
     })
-    
-    /*$("#btnAlmacenarJson").click((event) =>{
-        // Guardado de Informacion en JSON 
-        const urlJSONExpense = "./data/dataExpense.json";
-        const urlJSONBudget = "./data/dataBudget.json";
-        let expenseList = ui.itemExpenseList;
-        let budgetList = ui.itemBudgetList;
-        console.log(ui.itemBudgetList);
-        if(event.target.id === 'btnAlmacenarJson'){
-            if(expenseList=="" || budgetList==""){
-                for (const iterator of expenseList) {
-                    $.post(urlJSONExpense, iterator, (respuesta, estado) => {
-                        if(estado === "success"){
-                            console.log(`Se guardo ${respuesta.title} con id: ${respuesta.id}`);
-                        }
-                    }) 
-                }
-                for (const iterator of budgetList) {
-                    $.post(urlJSONBudget, iterator, (respuesta, estado) => {
-                        if(estado === "success"){
-                            console.log(`Se guardo ${respuesta.title} con id: ${respuesta.id}`);
-                        }
-                    }) 
-                }
-            }else{
-                console.log("ERROR - Faltan Datos");
-                alert("No hay suficientes datos para guardar. Debe haber como minimo un gasto y un ingreso")
-            }
-        }
-
-    })*/
 
     // Boton para top pagina
     var amountScrolled = 120;
-    
-    $(window).scroll(function() {
-    if ( $(window).scrollTop() > amountScrolled ) {
-        $('button.btnBackTop').addClass("show");
-    } else {
-        $('button.btnBackTop').removeClass("show");
-    }
+
+    $(window).scroll(function () {
+        if ($(window).scrollTop() > amountScrolled) {
+            $('button.btnBackTop').addClass("show");
+        } else {
+            $('button.btnBackTop').removeClass("show");
+        }
     });
 
-        // Con el boton voy arriba de todo
-    $('button.btnBackTop').click(function() {
-    $('html, body').animate({
-        scrollTop: 0
-    }, 800);
+    // Con el boton voy arriba de todo
+    $('button.btnBackTop').click(function () {
+        $('html, body').animate({
+            scrollTop: 0
+        }, 800);
     });
 
 }
@@ -471,5 +466,8 @@ function eventListeners() {
 $(document).ready(function () {
     console.log("DOM full loaded and parsed")
     eventListeners();
-})
+    // Inhabilito el boton de Guardado de Informacion
+    $('#form-submit').hide();
+    //$('#form-submit').prop('disabled', true);
 
+})
