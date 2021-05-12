@@ -50,13 +50,13 @@ class UI {
         const amount = this.numberInput.val();
         const title = this.textInput.val();
 
-        if ((this.checkForm() && (amount > 0) )) { //condicion si todo esta Ok
+        if ((this.checkForm() && (amount > 0))) { //condicion si todo esta Ok
             //Para dejar todos los valores vacios
             /*$('input[type=text]').each(function () {
                 $(this).val('');
             });*/
-        
-            
+
+
             this.dateInput.val('');
             this.account.val('');
             this.category.val('');
@@ -85,8 +85,10 @@ class UI {
                 this.itemID++;
                 this.itemBudgetList.push(income);
                 this.itemTotalList.push(income); // GUARDO en una lista total para posterior JSON
-                
+
                 $('#form-submit').fadeOut(800);
+                $('#selectBudget').removeClass("selectedBudget");
+                $('#selectExpense').removeClass("selectedExpense");
                 // Instancio funciones creadas
                 this.addBudget(income);
                 this.showBalance();
@@ -216,14 +218,19 @@ class UI {
         this.balanceAmount.text(total);
         // Condiciones Si total es <> 0
         if (total < 0) {
-            this.balance.removeClass("showGreen", "showBlack");
-            this.balance.addClass("showRed");
+            console.log('menor a 0');
+            $("#divApp-balance").addClass('btn-danger');
+            $("#divApp-balance").removeClass('btn-success btn-dark');
+
         } else if (total > 0) {
-            this.balance.removeClass("showRed", "showBlack");
-            this.balance.addClass("showGreen");
+            console.log($("#divApp-balance"));
+            $("#divApp-balance").addClass('btn-success');
+            $("#divApp-balance").removeClass("btn-danger btn-dark");
+
         } else if (total === 0) {
-            this.balance.removeClass("showRed", "showGreen");
-            this.balance.addClass("showBlack");
+            console.log('igual a 0');
+            $("#divApp-balance").addClass('btn-dark');
+            $("#divApp-balance").removeClass('btn-success btn-danger');
         }
 
     }
@@ -412,12 +419,10 @@ function eventListeners() {
 
 
 
-    // Toggle para Mostrar Listado de Gastos / Ingresos
+
+    // Evento de oprimir boton "Mostrar Listado" para ver cargas
     btnListado.click(() => {
-        $("#div-Listado").toggle("slow");
-        $("html, body").animate({
-            scrollTop: $(document).height()
-        }, 1000) //Voy al final del documento para ver el listado
+        mostrarListado();
     })
 
     // Implementando JSON y AJAX
@@ -455,19 +460,118 @@ function eventListeners() {
 
     // Con el boton voy arriba de todo
     $('button.btnBackTop').click(function () {
-        $('html, body').animate({
-            scrollTop: 0
-        }, 800);
+        aTopDePagina()
     });
 
 }
+// Funcion para ir al principio de la pagina
+function aTopDePagina() {
+    $('html, body').animate({
+        scrollTop: 0
+    }, 800);
+}
+// Toggle para Mostrar Listado de Gastos / Ingresos
+function mostrarListado() {
+    $("#div-Listado").toggle("slow");
+    $("html, body").animate({
+        scrollTop: $(document).height()
+    }, 1000) //Voy al final del documento para ver el listado
+}
 
+// FUNCION COMPLEJA QUE TENGO QUE MODIFICAR DESPUES
+// Funcion de carga de pagina
+function firstLoad() {
+    let timer = 1000
+
+    $('header').fadeIn(timer);
+    // Cargamos el primer paso
+    setTimeout(() => {
+        $('#nro1').addClass('show');
+        $('#selectBudget').fadeIn(timer + 500);
+        $('#selectExpense').fadeIn(timer + 500);
+        setTimeout(() => {
+            //Cargamos el segundo paso
+            $('#nro2').addClass('show');
+            let hijosForm = $("#generic-form").children();
+            let cont = 1;
+            $("#generic-form").slideDown(timer * 1.5);
+            for (const formInput of hijosForm) {
+                $(`#generic-form${cont}`).removeClass('hideItem');
+                cont += 1;
+                if (cont === 6) {
+                    break
+                }
+            }
+            setTimeout(() => {
+                //Cargamos el tercer paso
+                $('#nro3').addClass('show');
+                $('#divApp-budget').slideDown(timer);
+                $('#divApp-expense').slideDown(timer);
+                $('#divApp-balance').slideDown(timer * 1.5);
+                setTimeout(() => {
+                    //Cargamos el Boton de Listado
+                    $('#nro4').addClass('show');
+                    $('#btnListado').fadeIn(timer);
+                    setTimeout(() => {
+                        mostrarListado();
+                        $('#footer').slideDown(timer);
+                        setTimeout(() => {
+                            $('#div-Listado').toggle("slow");
+                            aTopDePagina();
+                            $('#nro1').fadeOut(timer);
+                            $('#nro2').fadeOut(timer);
+                            $('#nro3').fadeOut(timer);
+                            $('#nro4').fadeOut(timer);
+                        }, timer);
+                    }, timer);
+                }, timer);
+            }, timer);
+        }, timer);
+    }, timer);
+
+}
+
+function alreadyVisited() {
+    let timer = 1500;
+    $('#nro1').hide();
+    $('#nro2').hide();
+    $('#nro3').hide();
+    $('#nro4').hide();
+    $('header').fadeIn(timer);
+    $('#selectBudget').fadeIn(timer + 500);
+    $('#selectExpense').fadeIn(timer + 500);
+    let hijosForm = $("#generic-form").children();
+            let cont = 1;
+            $("#generic-form").slideDown(timer * 1.5);
+            for (const formInput of hijosForm) {
+                $(`#generic-form${cont}`).removeClass('hideItem');
+                cont += 1;
+                if (cont === 6) {
+                    break
+                }
+            }
+    $('#divApp-budget').fadeIn(timer*3);
+    $('#divApp-expense').fadeIn(timer*3);
+    $('#divApp-balance').slideDown(timer * 1.5);
+    $('#footer').fadeIn(timer*5);
+
+}
+//////////////////////////////////////////////////////////////////////////////////////
 // Este evento DOMContentLoaded es disparado cuando el documento HTML ha sido completamente cargado
-$(document).ready(function () {
-    console.log("DOM full loaded and parsed")
-    eventListeners();
-    // Inhabilito el boton de Guardado de Informacion
-    $('#form-submit').hide();
-    //$('#form-submit').prop('disabled', true);
 
+$(document).ready(function () {
+    //Verifico si ya entro alguna vez ese usuario
+    const PEPITO = false;
+    if (PEPITO !== true) {
+        // Ya entro PEPITO a la pagina y no hace falta mostrarle los pasos
+        alreadyVisited();
+
+    } else {
+        // Realizo las animaciones de primera visita a la pagina
+        firstLoad();
+    }
+
+
+    //Aplico los eventos
+    eventListeners();
 })
