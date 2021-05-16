@@ -31,12 +31,6 @@ class UI {
         this.itemTotalList = []; //Listado Completo de Gastos e Ingresos para guardar
         this.expenseList = $("#expense-list");
         this.budgetList = $("#budget-list");
-
-        // Variables que no estan en uso
-        this.itemExpenseID = 0;
-        this.itemBudgetID = 0;
-
-
     }
 
     // Declaramos los Metodos
@@ -56,7 +50,6 @@ class UI {
                 $(this).val('');
             });*/
 
-
             this.dateInput.val('');
             this.account.val('');
             this.category.val('');
@@ -68,10 +61,8 @@ class UI {
             this.feedbackNotif.html(`<p> Carga exitosa </p>`);
             this.feedbackNotif.removeClass('alert-danger');
             this.feedbackNotif.addClass('alert-success');
-
-            //////////////////////////////////////////////
-            // Verifico si esta apretado boton Ingreso o Egreso
-            if (valor === true) {
+            
+            if (valor === true) {// Verifico si esta apretado boton Ingreso o Egreso
                 // Creo objeto INCOME
                 const income = {
                     id: this.itemID,
@@ -90,10 +81,8 @@ class UI {
                 $('#selectBudget').removeClass("selectedBudget");
                 $('#selectExpense').removeClass("selectedExpense");
                 // Instancio funciones creadas
-                this.addBudget(income);
+                this.appendItem(income);
                 this.showBalance();
-
-
 
             } else {
                 // Creo objeto EXPENSE
@@ -109,8 +98,12 @@ class UI {
                 this.itemID++;
                 this.itemExpenseList.push(expense);
                 this.itemTotalList.push(expense); // GUARDO en una lista total para posterior JSON
+
+                $('#form-submit').fadeOut(800);
+                $('#selectBudget').removeClass("selectedBudget");
+                $('#selectExpense').removeClass("selectedExpense");
                 // Instancio funciones creadas
-                this.addExpense(expense);
+                this.appendItem(expense);
                 this.showBalance();
             }
 
@@ -121,7 +114,6 @@ class UI {
             this.feedbackNotif.addClass('alert-danger');
 
         }
-
     }
 
     checkForm() {
@@ -149,57 +141,30 @@ class UI {
         }
         // Verifico que en el array no haya valores falsos
         if (controlArray.reduce((curr, acc) => acc + curr) == controlArray.length) {
-
             checkFormOk = true;
-        } else {
-
+        } 
+        else {
             checkFormOk = false;
         }
-
         return checkFormOk;
     }
 
-    // addBudget (agregar INPUT)
-    addBudget(income) {
+    // appendItem (agregar GASTO o INGRESO) 
+    appendItem(item) {
         this.totalList.prepend(`
-        <div class="budget btn-light" id="expense${income.id}">
-            <div class="budget-item d-flex justify-content-between align-items-center">
-                <div class="col-2 budget-list-item">${income.date}</div>
-                <div class="col-2 budget-list-item text-uppercase">${income.title}</div>
-                <div class="col-2 budget-list-item budgetAmount">+$ ${income.amount}</div>
-                <div class="col-2 budget-list-item">Ingreso</div>
-                <div class="col-2 budget-list-item">${income.category}</div>
-                <div class="col-2 budget-icons">
-                    <div class="row">
-                        <span href="#" class="edit-icon mx-2" data-id="${income.id}">
+        <div class="${item.type} btn-light" id="${item.type}${item.id}">
+            <div class="${item.type}-item d-flex justify-content-between align-items-center">
+                <div class="col-2 ${item.type}-list-item">${item.date}</div>
+                <div class="col-2 ${item.type}-list-item text-uppercase">${item.title}</div>
+                <div class="col-2 ${item.type}-list-item ${item.type}Amount">$ ${item.amount}</div>
+                <div class="col-2 ${item.type}-list-item">Gasto</div>
+                <div class="col-2 ${item.type}-list-item">${item.category}</div>
+                <div class="col-2 ${item.type}-icons">
+                    <div class="row justify-content-center">
+                        <span href="#" class="edit-icon mx-2" data-id="${item.id}">
                             <ion-icon name="create" size="large" id="edit-button"></ion-icon>
                         </span>
-                        <span href="#" class="delete-icon" data-id="${income.id}">
-                            <ion-icon name="trash" size="large" "></ion-icon>
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        `)
-    }
-
-    // addExpense (agregar GASTO)
-    addExpense(expense) {
-        this.totalList.prepend(`
-        <div class="expense btn-light" id="expense${expense.id}">
-            <div class="expense-item d-flex justify-content-between align-items-center">
-                <div class="col-2 expense-list-item">${expense.date}</div>
-                <div class="col-2 expense-list-item text-uppercase">${expense.title}</div>
-                <div class="col-2 expense-list-item expenseAmount">-$ ${expense.amount}</div>
-                <div class="col-2 expense-list-item">Gasto</div>
-                <div class="col-2 expense-list-item">${expense.category}</div>
-                <div class="col-2 expense-icons">
-                    <div class="row">
-                        <span href="#" class="edit-icon mx-2" data-id="${expense.id}">
-                            <ion-icon name="create" size="large" id="edit-button"></ion-icon>
-                        </span>
-                        <span href="#" class="delete-icon" data-id="${expense.id}">
+                        <span href="#" class="delete-icon" data-id="${item.id}">
                             <ion-icon name="trash" size="large" id="delete-button"></ion-icon>
                             <!--<button class="btn btn-sm btn-danger" id="delete-button">borrar</button>-->
                         </span>
@@ -234,6 +199,7 @@ class UI {
         }
 
     }
+
     // Calculo el Ingreso Total (totalbudget)
     totalBudget() {
         let totalBudget = 0;
@@ -288,7 +254,9 @@ class UI {
             this.dateInput.val(expense[0].date);
             this.textInput.val(expense[0].title);
             this.numberInput.val(expense[0].amount);
-        } else if (parent.classList.contains('budget')) { // El elemento es un ingreso (Budget)
+            
+        }
+        else if (parent.classList.contains('budget')) { // El elemento es un ingreso (Budget)
 
             parent.remove();
             // elimino el elemento de la lista Budget
@@ -432,11 +400,11 @@ function eventListeners() {
             $.each(result, function (i, item) {
                 if (item.type === "budget") {
                     ui.itemBudgetList.push(item);
-                    ui.addBudget(item);
+                    ui.appendItem(item);
                     ui.showBalance();
                 } else if (item.type === "expense") {
                     ui.itemExpenseList.push(item);
-                    ui.addExpense(item);
+                    ui.appendItem(item);
                     ui.showBalance();
                 }
             })
@@ -553,6 +521,7 @@ function alreadyVisited() {
     $('#divApp-budget').fadeIn(timer*3);
     $('#divApp-expense').fadeIn(timer*3);
     $('#divApp-balance').slideDown(timer * 1.5);
+    $('#btnListado').fadeIn(timer*4);
     $('#footer').fadeIn(timer*5);
 
 }
@@ -561,7 +530,7 @@ function alreadyVisited() {
 
 $(document).ready(function () {
     //Verifico si ya entro alguna vez ese usuario
-    const PEPITO = false;
+    const PEPITO = true;
     if (PEPITO !== true) {
         // Ya entro PEPITO a la pagina y no hace falta mostrarle los pasos
         alreadyVisited();
