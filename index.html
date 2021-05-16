@@ -17,12 +17,12 @@
     <link rel="stylesheet" href="./css/main.css">
 </head>
 
-<body>
+<body class="bg-dark">
     <header class="displayOff">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-11">
-                    <h2 class="text-uppercase">Plataforma para cargar Gastos / Ingresos</h2>
+                    <h2 class="text-uppercase text-light">Plataforma para cargar Gastos / Ingresos</h2>
                 </div>
 
             </div>
@@ -30,10 +30,10 @@
     </header>
     <main>
         <div class="" id="pasosIntro">
-            <div class="btn-dark" id="nro1">1</div>
-            <div class="btn-dark" id="nro2">2</div>
-            <div class="btn-dark" id="nro3">3</div>
-            <div class="btn-dark" id="nro4">4</div>
+            <div class="btn-light" id="nro1">1</div>
+            <div class="btn-light" id="nro2">2</div>
+            <div class="btn-light" id="nro3">3</div>
+            <div class="btn-light" id="nro4">4</div>
             
         </div>
         <div class="container-fluid" id="div-form">
@@ -61,7 +61,7 @@
                     <!-- Formulario Generico -->
                     <form id="generic-form" class="generic-form displayOff">
                         <div class="form-group row  hideItem" id="generic-form1">
-                            <label for="generic-date" class="col-sm-2 ">Fecha:</label>
+                            <label for="generic-date" class="col-sm-2 text-light">Fecha:</label>
                             <div class="col-sm-9">
                                 <input type="date" id="generic-date" class="form-control generic-input">
                                 <small id="small-date" class="form-text text-muted">
@@ -74,7 +74,7 @@
                         </div>
 
                         <div class="form-group row hideItem" id="generic-form2">
-                            <label for="generic-account" class="col-sm-2 ">Cuenta:</label>
+                            <label for="generic-account" class="col-sm-2 text-light">Cuenta:</label>
                             <div class="col-sm-9">
                                 <select id="generic-account" class="form-control">
                                     <option value=""></option>
@@ -92,7 +92,7 @@
                         </div>
 
                         <div class="form-group row hideItem" id="generic-form3">
-                            <label for="generic-category" class="col-sm-2 ">Categoria:</label>
+                            <label for="generic-category" class="col-sm-2 text-light">Categoria:</label>
                             <div class="col-sm-9">
                                 <select id="generic-category" class="form-control">
                                     <option value=""></option>
@@ -110,7 +110,7 @@
                         </div>
 
                         <div class="form-group row hideItem" id="generic-form4" >
-                            <label for="generic-amount" class="col-sm-2">Monto:</label>
+                            <label for="generic-amount" class="col-sm-2 text-light">Monto:</label>
                             <div class="col-sm-9">
                                 <input type="number" id="number-input" class="form-control generic-input">
                                 <small id="small-amount" class="form-text text-muted">
@@ -123,7 +123,7 @@
                         </div>
 
                         <div class="form-group row hideItem" id="generic-form5">
-                            <label for="generic-title" class="col-sm-2">Descripcion:</label>
+                            <label for="generic-title" class="col-sm-2 text-light">Descripcion:</label>
                             <div class="col-sm-9">
                                 <input type="text" id="text-input" class="form-control generic-input">
                                 <small id="small-description" class="form-text text-muted">
@@ -154,7 +154,7 @@
             <div id="div-appInfo">
                 <div class="row justify-content-center">
                     <div class="col-4 text-center btn-outline-primary displayOff" id="divApp-budget">
-                        <h3 class="text-uppercase">Total Ingresos</h3>
+                        <h3 class="text-uppercase ">Total Ingresos</h3>
                         <span class="material-icons budget-icon">savings</span>
                         <h3 class="text-uppercase budget-amount" id="budget"><span>+ $ <span
                                     id="budget-amount">0</span></span></h3>
@@ -180,10 +180,10 @@
                 <div class="div-btnListado"> 
                     <button id="btnListado" class="btn btn-warning  displayOff">Mostrar Listado</button>
                 </div>
-                <div id="div-Listado" class="displayOff justify-content-center">
+                <div id="div-Listado" class="displayOff justify-content-center bg-light">
                     <div class="div-btnJSON">
                         <div class="row">
-                            <h4>Listado</h4>
+                            <h4 class="text-uppercase">Listado</h4>
                             <button id="btnLoadJson" class="btnLoadJson btn btn-outline-dark">Cargar Datos</button>
                             <button id="btnSaveJson" class="btnSaveJson btn btn-outline-dark" disabled>Guardar Datos</button>
                         </div>
@@ -195,7 +195,7 @@
                         <div class="col-2 title-list-item text-uppercase">Monto</div>
                         <div class="col-2 title-list-item text-uppercase">Tipo</div>
                         <div class="col-2 title-list-item text-uppercase">Categoria</div>
-                        <div class="col-2 title-list-item text-uppercase">Accion</div>
+                        <div class="col-2 title-list-item text-uppercase ">Accion</div>
                     </div>
                     <div class="total-list container-fluid" id="total-list">
                     </div>
